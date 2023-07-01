@@ -9,6 +9,13 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 
+import Alert from "@mui/material/Alert";
+import IconButton from "@mui/material/IconButton";
+import Collapse from "@mui/material/Collapse";
+import CloseIcon from "@mui/icons-material/Close";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 function Copyright() {
   return (
     <Typography variant="body2" color="text.secondary" align="center">
@@ -23,18 +30,81 @@ function Copyright() {
 }
 
 export default function Login() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  type alertType = string | null;
+
+  const [alert, setAlert] = useState<alertType>(null);
+  const [open, setOpen] = useState<boolean>(false);
+
+  const navigate = useNavigate();
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      username: data.get("username"),
-      password: data.get("password"),
-    });
+    console.log(data.get("username"));
+    console.log(data.get("password"));
+    try {
+      const res = await fetch(
+        "https://odin-facebook-api.onrender.com/api/auth/login",
+        {
+          method: "POST",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: data.get("username"),
+            password: data.get("password"),
+          }),
+        }
+      );
+
+      const resJson = await res.json();
+
+      if (res.status === 200) {
+        console.log(resJson);
+        if (resJson.error) {
+          setAlert(resJson.error);
+          setOpen(true);
+        } else if (resJson.token) {
+          sessionStorage.setItem("token", resJson.token);
+          navigate("/");
+        }
+      }
+    } catch (err) {
+      console.log(err);
+      if (err instanceof Error) {
+        setAlert(err.message);
+        setOpen(true);
+      }
+    }
   };
 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
+      <Box sx={{ width: "100%" }}>
+        <Collapse in={open}>
+          <Alert
+            severity="error"
+            action={
+              <IconButton
+                aria-label="close"
+                color="inherit"
+                size="small"
+                onClick={() => {
+                  setOpen(false);
+                }}
+              >
+                <CloseIcon fontSize="inherit" />
+              </IconButton>
+            }
+            sx={{ mb: 2 }}
+          >
+            {alert}
+          </Alert>
+        </Collapse>
+      </Box>
+
       <Box
         sx={{
           marginTop: 8,
