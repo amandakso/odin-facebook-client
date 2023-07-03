@@ -61,13 +61,24 @@ export default function Login() {
       const resJson = await res.json();
 
       if (res.status === 200) {
-        console.log(resJson);
         if (resJson.error) {
           setAlert(resJson.error);
           setOpen(true);
+        } else if (resJson.message) {
+          setAlert(resJson.message);
+          setOpen(true);
         } else if (resJson.token) {
+          if (alert) {
+            setAlert(null);
+          }
+          if (open) {
+            setOpen(false);
+          }
           sessionStorage.setItem("token", resJson.token);
           navigate("/");
+        } else {
+          setAlert("Unable to login");
+          setOpen(true);
         }
       }
     } catch (err) {
