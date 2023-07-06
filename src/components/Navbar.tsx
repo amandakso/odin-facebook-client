@@ -15,7 +15,12 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
+
 import Button from "@mui/material/Button";
+import Snackbar from "@mui/material/Snackbar";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import Alert from "@mui/material/Alert";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -58,12 +63,20 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function Navbar() {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
-    React.useState<null | HTMLElement>(null);
+    useState<null | HTMLElement>(null);
+
+  const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
+  const [alertMessage, setAlertMessage] = useState<string>("");
+  const [alertSeverity, setAlertSeverity] = useState<"error" | "success">(
+    "error"
+  );
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+  const navigate = useNavigate();
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -80,6 +93,42 @@ export default function Navbar() {
 
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setMobileMoreAnchorEl(event.currentTarget);
+  };
+
+  const handleLogout = async () => {
+    const token = sessionStorage.getItem("token");
+    try {
+      const res = await fetch(
+        "https://odin-facebook-api.onrender.com/api/auth/logout",
+        {
+          method: "PUT",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `bearer ${token}`,
+          },
+        }
+      );
+      const resJson = await res.json();
+      if (resJson.logout) {
+        sessionStorage.removeItem("token");
+        sessionStorage.clear();
+        setOpenSnackbar(true);
+        setAlertSeverity("success");
+        setAlertMessage(resJson.message);
+        navigate("/login");
+      } else {
+        setOpenSnackbar(true);
+        setAlertSeverity("error");
+        setAlertMessage(resJson.message);
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        setOpenSnackbar(true);
+        setAlertSeverity("error");
+        setAlertMessage(err.message);
+      }
+    }
   };
 
   const menuId = "primary-search-account-menu";
@@ -100,7 +149,7 @@ export default function Navbar() {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
     </Menu>
   );
 
@@ -152,6 +201,11 @@ export default function Navbar() {
           <AccountCircle />
         </IconButton>
         <p>Profile</p>
+      </MenuItem>
+      <MenuItem>
+        <Button onClick={handleLogout} color="inherit" sx={{ padding: "12px" }}>
+          Logout
+        </Button>
       </MenuItem>
     </Menu>
   );
@@ -217,6 +271,27 @@ export default function Navbar() {
             >
               <AccountCircle />
             </IconButton>
+            <Button
+              onClick={handleLogout}
+              color="inherit"
+              sx={{ padding: "12px" }}
+            >
+              Logout
+            </Button>
+            <Snackbar
+              open={openSnackbar}
+              autoHideDuration={5000}
+              onClose={() => setOpenSnackbar(false)}
+              anchorOrigin={{ vertical: "top", horizontal: "left" }}
+            >
+              <Alert
+                onClose={() => setOpenSnackbar(false)}
+                severity={alertSeverity}
+                sx={{ width: "100%" }}
+              >
+                {alertMessage}
+              </Alert>
+            </Snackbar>
           </Box>
           <Box sx={{ display: { xs: "flex", md: "none" } }}>
             <IconButton
