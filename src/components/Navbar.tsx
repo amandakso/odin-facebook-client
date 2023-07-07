@@ -22,6 +22,17 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Alert from "@mui/material/Alert";
 
+import jwtDecode, { JwtPayload } from "jwt-decode";
+
+declare module "jwt-decode" {
+  export interface JwtPayload {
+    user: {
+      username: string;
+      _id: string;
+    };
+  }
+}
+
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -131,6 +142,15 @@ export default function Navbar() {
     }
   };
 
+  const handleProfileClick = () => {
+    const token: string = sessionStorage.getItem("token") as string;
+    const decoded = jwtDecode<JwtPayload>(token);
+    console.log(decoded);
+    console.log(decoded.user._id);
+    console.log(decoded.user.username);
+    navigate(`/profile/${decoded.user.username}`);
+  };
+
   const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
@@ -148,7 +168,7 @@ export default function Navbar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
     </Menu>
   );
