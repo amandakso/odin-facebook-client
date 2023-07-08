@@ -74,6 +74,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function Navbar() {
+  const [searchValue, setSearchValue] = useState<string>("");
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     useState<null | HTMLElement>(null);
@@ -149,6 +150,11 @@ export default function Navbar() {
     console.log(decoded.user._id);
     console.log(decoded.user.username);
     navigate(`/profile/${decoded.user.username}`);
+  };
+
+  const handleSearchClick = () => {
+    console.log(searchValue);
+    navigate(`/search/?search=${searchValue}`);
   };
 
   const menuId = "primary-search-account-menu";
@@ -256,9 +262,13 @@ export default function Navbar() {
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
-              placeholder="Search…"
+              placeholder="Search Users…"
               inputProps={{ "aria-label": "search" }}
+              onChange={(event) => setSearchValue(event.target.value)}
             />
+            <Button color="inherit" onClick={handleSearchClick}>
+              Search
+            </Button>
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
