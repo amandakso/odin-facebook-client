@@ -7,17 +7,33 @@ import Signup from "./components/Signup";
 import PrivateRoute from "./PrivateRoute";
 import Profile from "./components/Profile";
 import NotFound from "./components/NotFound";
+import Search from "./components/Search";
+import Navbar from "./components/Navbar";
+import { Outlet } from "react-router-dom";
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<PrivateRoute child={<Home />} />}></Route>
           <Route
-            path="/profile/:username"
-            element={<PrivateRoute child={<Profile />} />}
-          ></Route>
+            element={
+              <>
+                <Navbar />
+                <Outlet />
+              </>
+            }
+          >
+            <Route path="/" element={<PrivateRoute child={<Home />} />}></Route>
+            <Route
+              path="/profile/:username"
+              element={<PrivateRoute child={<Profile />} />}
+            ></Route>
+            <Route
+              path="/search"
+              element={<PrivateRoute child={<Search />} />}
+            ></Route>
+          </Route>
           <Route path="/login" element={<Login />}></Route>
           <Route path="/signup" element={<Signup />}></Route>
           <Route path="/*" element={<NotFound />}></Route>
