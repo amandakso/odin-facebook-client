@@ -157,6 +157,10 @@ export default function Navbar() {
     navigate(`/search/?search=${searchValue}`);
   };
 
+  const handleSettingsClick = () => {
+    navigate(`/settings`);
+  };
+
   const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
@@ -175,7 +179,7 @@ export default function Navbar() {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleSettingsClick}>My account</MenuItem>
     </Menu>
   );
 

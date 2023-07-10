@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Outlet, Routes, Route } from "react-router-dom";
 import "./App.css";
 
 import Home from "./components/Home";
@@ -9,7 +9,7 @@ import Profile from "./components/Profile";
 import NotFound from "./components/NotFound";
 import Search from "./components/Search";
 import Navbar from "./components/Navbar";
-import { Outlet } from "react-router-dom";
+import Settings from "./components/Settings";
 
 function App() {
   return (
@@ -32,6 +32,10 @@ function App() {
             <Route
               path="/search"
               element={<PrivateRoute child={<Search />} />}
+            ></Route>
+            <Route
+              path="/settings"
+              element={<PrivateRoute child={<Settings />} />}
             ></Route>
           </Route>
           <Route path="/login" element={<Login />}></Route>
