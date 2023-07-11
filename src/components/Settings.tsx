@@ -46,7 +46,11 @@ const Settings = () => {
         );
         const resJson = await res.json();
         if (resJson.error) {
-          alert(resJson.error);
+          setAlertMessage(resJson.error);
+          if (alertSeverity != "error") {
+            setAlertSeverity("error");
+          }
+          setSnackbarOpen(true);
           return;
         } else {
           console.log(resJson);
@@ -60,7 +64,12 @@ const Settings = () => {
         }
       } catch (err) {
         if (err instanceof Error) {
-          console.log(err.message);
+          setAlertMessage(err.message);
+          if (alertSeverity != "error") {
+            setAlertSeverity("error");
+          }
+          setSnackbarOpen(true);
+          return;
         }
       }
     };
