@@ -1,5 +1,7 @@
 import Container from "@mui/material/Container";
 import Divider from "@mui/material/Divider";
+import Alert from "@mui/material/Alert";
+import Snackbar from "@mui/material/Snackbar";
 import { useEffect, useState } from "react";
 import jwtDecode, { JwtPayload } from "jwt-decode";
 
@@ -13,9 +15,19 @@ declare module "jwt-decode" {
 }
 
 const Settings = () => {
+  const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false);
+  const [alertMessage, setAlertMessage] = useState<string>("");
+  const [alertSeverity, setAlertSeverity] = useState<"error" | "success">(
+    "error"
+  );
   const [profilePhoto, setProfilePhoto] = useState<BinaryData | null>(null);
   const [profileBio, setProfileBio] = useState<string>("");
   const [username, setUsername] = useState<string>("");
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
+
   // Get current profile info: photo, bio, username
   useEffect(() => {
     const token: string = sessionStorage.getItem("token") as string;
@@ -62,6 +74,20 @@ const Settings = () => {
         <Divider role="presentation">Update Profile Bio</Divider>
         <Divider role="presentation">Update Username</Divider>
         <Divider role="presentation">Update Password</Divider>
+
+        <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={6000}
+          onClose={handleSnackbarClose}
+        >
+          <Alert
+            onClose={handleSnackbarClose}
+            severity={alertSeverity}
+            sx={{ width: "100%" }}
+          >
+            {alertMessage}
+          </Alert>
+        </Snackbar>
       </Container>
     </>
   );
