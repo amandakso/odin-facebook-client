@@ -149,6 +149,7 @@ export default function Navbar() {
     console.log(decoded);
     console.log(decoded.user._id);
     console.log(decoded.user.username);
+    handleMenuClose();
     navigate(`/profile/${decoded.user.username}`);
   };
 
@@ -158,6 +159,7 @@ export default function Navbar() {
   };
 
   const handleSettingsClick = () => {
+    handleMenuClose();
     navigate(`/settings`);
   };
 
