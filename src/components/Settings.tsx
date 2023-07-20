@@ -32,14 +32,13 @@ const Settings = () => {
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   };
-  // TODO add fetch to update bio in server
+
   const updateBio = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const token: string = sessionStorage.getItem("token") as string;
     const decoded = jwtDecode<JwtPayload>(token);
     const data = new FormData(event.currentTarget);
-    console.log(data.get("bio"));
     try {
       const res = await fetch(
         `https://odin-facebook-api.onrender.com/api/users/${decoded.user._id}/profile/update-bio`,
@@ -203,6 +202,7 @@ const Settings = () => {
           open={snackbarOpen}
           autoHideDuration={6000}
           onClose={handleSnackbarClose}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
         >
           <Alert
             onClose={handleSnackbarClose}
