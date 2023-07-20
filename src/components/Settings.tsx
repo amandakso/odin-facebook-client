@@ -8,7 +8,6 @@ import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import { useEffect, useState } from "react";
 import jwtDecode, { JwtPayload } from "jwt-decode";
-import { Mouse } from "@mui/icons-material";
 
 declare module "jwt-decode" {
   export interface JwtPayload {
