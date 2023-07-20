@@ -97,6 +97,11 @@ const Settings = () => {
     }
   };
 
+  const updateUsername = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    console.log("tbd");
+  };
+
   // Get current profile info: photo, bio, username
   useEffect(() => {
     const token: string = sessionStorage.getItem("token") as string;
@@ -122,7 +127,6 @@ const Settings = () => {
           setSnackbarOpen(true);
           return;
         } else {
-          console.log(resJson);
           if (resJson.photo) {
             setProfilePhoto(resJson.photo);
           }
@@ -195,6 +199,50 @@ const Settings = () => {
           </Grid>
         </section>
         <Divider role="presentation">Update Username</Divider>
+        <section>
+          <Grid container columns={2}>
+            <Grid item xs>
+              <Grid container direction="column" alignItems="flex-start">
+                <Grid item xs>
+                  <p>Current Username:</p>
+                </Grid>
+                <Grid item xs>
+                  <div>
+                    <p>{username}</p>
+                  </div>
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid item xs>
+              <Grid container direction="column" alignItems="flex-start">
+                <Grid item>
+                  <p>New Username:</p>
+                </Grid>
+                <Grid item>
+                  <Box component="form" onSubmit={updateUsername} noValidate>
+                    <Grid container columns={2} alignItems="center" spacing={4}>
+                      <Grid item>
+                        <TextField
+                          margin="normal"
+                          required
+                          id="username"
+                          label="New Username: "
+                          name="username"
+                          autoFocus
+                        />
+                      </Grid>
+                      <Grid item>
+                        <Button type="submit" variant="contained">
+                          Update Username
+                        </Button>
+                      </Grid>
+                    </Grid>
+                  </Box>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+        </section>
         <Divider role="presentation">Update Password</Divider>
 
         <Snackbar
