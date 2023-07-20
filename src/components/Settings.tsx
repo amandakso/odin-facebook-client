@@ -154,11 +154,11 @@ const Settings = () => {
         <section>
           <Grid container columns={2}>
             <Grid item xs>
-              <Grid container columns={1}>
-                <Grid item xs justifyContent="flex-start">
+              <Grid container direction="column" alignItems="flex-start">
+                <Grid item xs>
                   <p>Current Bio:</p>
                 </Grid>
-                <Grid item xs justifyContent="flex-start">
+                <Grid item xs>
                   <div>
                     <p>{profileBio}</p>
                   </div>
