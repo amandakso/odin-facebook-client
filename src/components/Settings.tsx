@@ -97,9 +97,134 @@ const Settings = () => {
     }
   };
 
-  const updateUsername = (event: React.FormEvent<HTMLFormElement>) => {
+  const updateUsername = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("tbd");
+
+    const token: string = sessionStorage.getItem("token") as string;
+    const decoded = jwtDecode<JwtPayload>(token);
+    const data = new FormData(event.currentTarget);
+    console.log(data.get("username"));
+    try {
+      const res = await fetch(
+        `https://odin-facebook-api.onrender.com/api/users/${decoded.user._id}/profile/update-username`,
+        {
+          method: "PUT",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `bearer ${token}`,
+          },
+          body: JSON.stringify({
+            username: data.get("username"),
+          }),
+        }
+      );
+      const resJson = await res.json();
+
+      if (res.status === 200) {
+        if (resJson.error) {
+          setAlertMessage(resJson.error);
+          if (alertSeverity != "error") {
+            setAlertSeverity("error");
+          }
+          setAlertMessage(resJson.error);
+          setSnackbarOpen(true);
+        } else if (resJson.data) {
+          setAlertMessage(resJson.message);
+          if (alertSeverity != "success") {
+            setAlertSeverity("success");
+          }
+          setSnackbarOpen(true);
+          setProfileBio(resJson.data);
+        } else {
+          return;
+        }
+      } else {
+        if (resJson.errors) {
+          setAlertMessage("Invalid entry. Unable to update username.");
+        } else {
+          setAlertMessage("An error occurred. Unable to update username.");
+        }
+        if (alertSeverity != "error") {
+          setAlertSeverity("error");
+        }
+        setSnackbarOpen(true);
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        setAlertMessage(err.message);
+        if (alertSeverity != "error") {
+          setAlertSeverity("error");
+        }
+        setSnackbarOpen(true);
+      }
+    }
+  };
+
+  const updatePassword = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const token: string = sessionStorage.getItem("token") as string;
+    const decoded = jwtDecode<JwtPayload>(token);
+    const data = new FormData(event.currentTarget);
+    console.log(data.get("password"));
+    try {
+      const res = await fetch(
+        `https://odin-facebook-api.onrender.com/api/users/${decoded.user._id}/profile/update-pwd`,
+        {
+          method: "PUT",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `bearer ${token}`,
+          },
+          body: JSON.stringify({
+            password: data.get("password"),
+          }),
+        }
+      );
+      const resJson = await res.json();
+
+      if (res.status === 200) {
+        console.log(resJson);
+        if (resJson.error) {
+          setAlertMessage(resJson.error);
+          if (alertSeverity != "error") {
+            setAlertSeverity("error");
+          }
+          setAlertMessage(resJson.error);
+          setSnackbarOpen(true);
+        } else if (resJson.data) {
+          setAlertMessage(resJson.message);
+          if (alertSeverity != "success") {
+            setAlertSeverity("success");
+          }
+          setSnackbarOpen(true);
+          setProfileBio(resJson.data);
+        } else {
+          return;
+        }
+      } else {
+        console.log(resJson);
+        if (resJson.errors) {
+          setAlertMessage("Invalid entry. Unable to update password.");
+        } else {
+          setAlertMessage("An error occurred. Unable to update password.");
+        }
+        if (alertSeverity != "error") {
+          setAlertSeverity("error");
+        }
+        setSnackbarOpen(true);
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        setAlertMessage(err.message);
+        if (alertSeverity != "error") {
+          setAlertSeverity("error");
+        }
+        setSnackbarOpen(true);
+      }
+    }
   };
 
   // Get current profile info: photo, bio, username
@@ -244,6 +369,50 @@ const Settings = () => {
           </Grid>
         </section>
         <Divider role="presentation">Update Password</Divider>
+        <section>
+          <Grid container columns={2}>
+            <Grid item xs>
+              <Grid container direction="column" alignItems="flex-start">
+                <Grid item xs>
+                  <p>Current Password:</p>
+                </Grid>
+                <Grid item xs>
+                  <div>
+                    <p></p>
+                  </div>
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid item xs>
+              <Grid container direction="column" alignItems="flex-start">
+                <Grid item>
+                  <p>New Password:</p>
+                </Grid>
+                <Grid item>
+                  <Box component="form" onSubmit={updatePassword} noValidate>
+                    <Grid container columns={2} alignItems="center" spacing={4}>
+                      <Grid item>
+                        <TextField
+                          margin="normal"
+                          required
+                          id="password"
+                          label="New Password: "
+                          name="password"
+                          autoFocus
+                        />
+                      </Grid>
+                      <Grid item>
+                        <Button type="submit" variant="contained">
+                          Update Password
+                        </Button>
+                      </Grid>
+                    </Grid>
+                  </Box>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+        </section>
 
         <Snackbar
           open={snackbarOpen}
