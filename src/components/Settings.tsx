@@ -32,6 +32,11 @@ const Settings = () => {
     setSnackbarOpen(false);
   };
 
+  const updatePhoto = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    console.log("tbd");
+  };
+
   const updateBio = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -278,6 +283,50 @@ const Settings = () => {
       <Container maxWidth="lg">
         <h1>Account Settings</h1>
         <Divider role="presentation">Update Profile Photo</Divider>
+        <section>
+          <Grid container columns={2}>
+            <Grid item xs>
+              <Grid container direction="column" alignItems="flex-start">
+                <Grid item xs>
+                  <p>Current Photo:</p>
+                </Grid>
+                <Grid item xs>
+                  <div>
+                    <p>{profileBio}</p>
+                  </div>
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid item xs>
+              <Grid container direction="column" alignItems="flex-start">
+                <Grid item>
+                  <p>New Photo:</p>
+                </Grid>
+                <Grid item>
+                  <Box component="form" onSubmit={updateBio} noValidate>
+                    <Grid container columns={2} alignItems="center" spacing={4}>
+                      <Grid item>
+                        <TextField
+                          margin="normal"
+                          required
+                          id="bio"
+                          label="New Bio: "
+                          name="bio"
+                          autoFocus
+                        />
+                      </Grid>
+                      <Grid item>
+                        <Button type="submit" variant="contained">
+                          Update Photo
+                        </Button>
+                      </Grid>
+                    </Grid>
+                  </Box>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+        </section>
         <Divider role="presentation">Update Profile Bio</Divider>
         <section>
           <Grid container columns={2}>
