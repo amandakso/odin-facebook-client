@@ -105,13 +105,9 @@ const Profile = () => {
     //fetchProfile();
   }, [decoded.user._id]);
 
-  return username == currentUser ? (
+  return (
     <>
-      <h1> My Profile Page</h1>
-    </>
-  ) : (
-    <>
-      <h1>Other Profile Page</h1>
+      <h1> {username} profile</h1>
     </>
   );
 };
