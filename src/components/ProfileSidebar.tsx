@@ -18,29 +18,24 @@ const ProfileSidebar = (props): JSX.Element => {
   useEffect(() => {
     switch (profileStatus) {
       case "self":
-        console.log("self");
         setFriendButtonVisible(false);
         setFriendButtonText(null);
         break;
       case "friend":
         setFriendButtonVisible(true);
         setFriendButtonText("Unfriend");
-        console.log("friend");
         break;
       case "requested":
         setFriendButtonVisible(true);
         setFriendButtonText("Friend Request Sent");
-        console.log("requested");
         break;
       case "pending":
         setFriendButtonVisible(true);
         setFriendButtonText("Confirm");
-        console.log("pending");
         break;
       case "other":
         setFriendButtonVisible(true);
         setFriendButtonText(null);
-        console.log("other");
         break;
       default:
         setFriendButtonText(null);
