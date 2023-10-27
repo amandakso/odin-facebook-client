@@ -55,7 +55,12 @@ const ProfileSidebar = (props): JSX.Element => {
       <div>PROFILE IMG PLACEHOLDER</div>
       <div>FRIENDS LIST PLACEHOLDER</div>
       {friendButtonVisible ? (
-        <Button variant="contained">{friendButtonText}</Button>
+        <Button
+          variant="contained"
+          disabled={profileStatus === "pending" || null ? true : false}
+        >
+          {friendButtonText}
+        </Button>
       ) : null}
     </>
   );
