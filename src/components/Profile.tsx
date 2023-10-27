@@ -1,7 +1,10 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
+import Grid from "@mui/material/Grid";
+
 import jwtDecode, { JwtPayload } from "jwt-decode";
+import ProfileSidebar from "./ProfileSidebar";
 
 declare module "jwt-decode" {
   export interface JwtPayload {
@@ -25,6 +28,7 @@ const Profile = () => {
   const [profileStatus, setProfileStatus] = useState<
     "self" | "friend" | "requested" | "pending" | "other" | null
   >(null);
+  const [profileId, setProfileId] = useState<string | null>(null);
 
   // Check if profile status
   useEffect(() => {
@@ -41,16 +45,20 @@ const Profile = () => {
           }
         );
         const resJson = await res.json();
-        const profileId = await resJson._id;
+        const id = await resJson._id;
 
-        if (profileId === currentUser) {
+        if (id) {
+          setProfileId(id);
+        }
+
+        if (id === currentUser) {
           setProfileStatus("self");
           console.log("self");
         } else {
           // check friendship status of other use
           try {
             const res = await fetch(
-              `https://odin-facebook-api.onrender.com/api/users/check-friendship/${currentUser}/${profileId}`,
+              `https://odin-facebook-api.onrender.com/api/users/check-friendship/${currentUser}/${id}`,
               {
                 method: "GET",
                 mode: "cors",
@@ -108,6 +116,19 @@ const Profile = () => {
   return (
     <>
       <h1> {username} profile</h1>
+      <Grid container spacing={2}>
+        <Grid item xs={4}>
+          <Grid item>
+            <h2>LEFT</h2>
+            <ProfileSidebar status={profileStatus} profileId={profileId} />
+          </Grid>
+        </Grid>
+        <Grid item xs={8}>
+          <Grid item>
+            <h2>RIGHT</h2>
+          </Grid>
+        </Grid>
+      </Grid>
     </>
   );
 };
