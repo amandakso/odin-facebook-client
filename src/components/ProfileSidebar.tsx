@@ -15,6 +15,10 @@ const ProfileSidebar = (props): JSX.Element => {
   const [friendButtonVisible, setFriendButtonVisible] =
     useState<boolean>(false);
 
+  function clickFriendButton() {
+    console.log("TBD");
+  }
+
   useEffect(() => {
     switch (profileStatus) {
       case "self":
@@ -35,7 +39,7 @@ const ProfileSidebar = (props): JSX.Element => {
         break;
       case "other":
         setFriendButtonVisible(true);
-        setFriendButtonText(null);
+        setFriendButtonText("Add Friend");
         break;
       default:
         setFriendButtonText(null);
@@ -53,6 +57,7 @@ const ProfileSidebar = (props): JSX.Element => {
         <Button
           variant="contained"
           disabled={profileStatus === "pending" || null ? true : false}
+          onClick={clickFriendButton}
         >
           {friendButtonText}
         </Button>
