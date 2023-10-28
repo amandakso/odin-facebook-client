@@ -15,8 +15,47 @@ const ProfileSidebar = (props): JSX.Element => {
   const [friendButtonVisible, setFriendButtonVisible] =
     useState<boolean>(false);
 
-  function clickFriendButton() {
-    console.log("TBD");
+  async function clickFriendButton() {
+    let text = " ";
+    switch(profileStatus) {
+      case("self"):
+        console.log("test2")
+        return
+      case("friend"):
+        text = "unfriend";
+        break;
+      case("requested"):
+        break;
+      case("pending"):
+        console.log("test3")
+        return 
+      case("other"):
+        break;
+      default:
+          console.log("error");
+          return
+    }
+    console.log("test1");
+    try {
+      //const res = await fetch(`https://odin-facebook-api.onrender.com/api/users/{props.profileId}/friends/{text}`)
+    }
+    /*const fetchProfile = async () => {
+      try {
+        const res = await fetch(
+          `https://odin-facebook-api.onrender.com/api/users/${decoded.user._id}/profile`,
+          {
+            method: "GET",
+            mode: "cors",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const resJson = await res.json();
+      } catch (err) {
+        console.log(err);
+      }
+    }; */
   }
 
   useEffect(() => {
@@ -56,7 +95,7 @@ const ProfileSidebar = (props): JSX.Element => {
       {friendButtonVisible ? (
         <Button
           variant="contained"
-          disabled={profileStatus === "pending" || null ? true : false}
+          disabled={profileStatus === "requested" || null ? true : false}
           onClick={clickFriendButton}
         >
           {friendButtonText}
