@@ -2,6 +2,17 @@ import { useEffect, useState } from "react";
 
 import Button from "@mui/material/Button";
 
+import jwtDecode, { JwtPayload } from "jwt-decode";
+
+declare module "jwt-decode" {
+  export interface JwtPayload {
+    user: {
+      username: string;
+      _id: string;
+    };
+  }
+}
+
 const ProfileSidebar = (props): JSX.Element => {
   type profileStatusType =
     | "self"
@@ -10,52 +21,69 @@ const ProfileSidebar = (props): JSX.Element => {
     | "pending"
     | "other"
     | null;
+
+  const token: string = sessionStorage.getItem("token") as string;
+  const decoded = jwtDecode<JwtPayload>(token);
   const profileStatus: profileStatusType = props.status;
   const [friendButtonText, setFriendButtonText] = useState<string | null>(null);
   const [friendButtonVisible, setFriendButtonVisible] =
     useState<boolean>(false);
 
-  async function clickFriendButton() {
-    let text = " ";
-    switch(profileStatus) {
-      case("self"):
-        console.log("test2")
-        return
-      case("friend"):
-        text = "unfriend";
+  function clickFriendButton() {
+    switch (profileStatus) {
+      case "self":
+        return;
+      case "friend":
+        deleteFriend();
         break;
-      case("requested"):
+      case "requested":
+        return;
+      case "pending":
+        confirmFriend();
         break;
-      case("pending"):
-        console.log("test3")
-        return 
-      case("other"):
+      case "other":
+        addFriend();
         break;
       default:
-          console.log("error");
-          return
+        console.log("error");
+        return;
     }
-    console.log("test1");
+  }
+
+  async function addFriend() {
     try {
-      //const res = await fetch(`https://odin-facebook-api.onrender.com/api/users/{props.profileId}/friends/{text}`)
-    }
-    /*const fetchProfile = async () => {
-      try {
-        const res = await fetch(
-          `https://odin-facebook-api.onrender.com/api/users/${decoded.user._id}/profile`,
-          {
-            method: "GET",
-            mode: "cors",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        const resJson = await res.json();
-      } catch (err) {
-        console.log(err);
+      const res = await fetch(
+        `https://odin-facebook-api.onrender.com/api/users/${props.profileId}/friends/add-friend`,
+        {
+          method: "POST",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `bearer ${token}`,
+          },
+        }
+      );
+      const resJson = await res.json();
+      if (resJson.status === "success") {
+        console.log(resJson.message);
       }
-    }; */
+      if (resJson.status === "error") {
+        console.log(resJson.error);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  function confirmFriend() {
+    console.log("TBD confirm friend");
+    // add dialog modal to confirm or deny
+  }
+
+  function deleteFriend() {
+    console.log("TBD delete friend");
+    // delete friend
+    // refresh page
   }
 
   useEffect(() => {
@@ -83,7 +111,6 @@ const ProfileSidebar = (props): JSX.Element => {
       default:
         setFriendButtonText(null);
         setFriendButtonVisible(false);
-        console.log("error");
     }
   }, [profileStatus]);
   return (
