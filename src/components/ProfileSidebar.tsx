@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import Button from "@mui/material/Button";
+import SimpleDialog from "@mui/material/Dialog";
 
 import jwtDecode, { JwtPayload } from "jwt-decode";
 
@@ -28,6 +29,8 @@ const ProfileSidebar = (props): JSX.Element => {
   const [friendButtonText, setFriendButtonText] = useState<string | null>(null);
   const [friendButtonVisible, setFriendButtonVisible] =
     useState<boolean>(false);
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+  const [dialogValue, setDialogValue] = useState("none");
 
   function clickFriendButton() {
     switch (profileStatus) {
@@ -66,6 +69,7 @@ const ProfileSidebar = (props): JSX.Element => {
       const resJson = await res.json();
       if (resJson.status === "success") {
         console.log(resJson.message);
+        window.location.reload();
       }
       if (resJson.status === "error") {
         console.log(resJson.error);
@@ -77,7 +81,62 @@ const ProfileSidebar = (props): JSX.Element => {
 
   function confirmFriend() {
     console.log("TBD confirm friend");
-    // add dialog modal to confirm or deny
+    setDialogOpen(true);
+  }
+
+  async function respondToFriend(response: string) {
+    if (response === "confirm") {
+      try {
+        const res = await fetch(
+          `https://odin-facebook-api.onrender.com/api/users/${props.profileId}/friends/accept-friend`,
+          {
+            method: "PUT",
+            mode: "cors",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `bearer ${token}`,
+            },
+          }
+        );
+        const resJson = await res.json();
+        if (resJson.status === "success") {
+          console.log(resJson.message);
+          window.location.reload();
+        }
+        if (resJson.status === "error") {
+          console.log(resJson.error);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    } else if (response === "deny") {
+      try {
+        const res = await fetch(
+          `https://odin-facebook-api.onrender.com/api/users/${props.profileId}/friends/reject-friend`,
+          {
+            method: "DELETE",
+            mode: "cors",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `bearer ${token}`,
+            },
+          }
+        );
+        const resJson = await res.json();
+        if (resJson.status === "success") {
+          console.log(resJson.message);
+          window.location.reload();
+        }
+        if (resJson.status === "error") {
+          console.log(resJson.error);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+      console.log("error");
+      return;
+    }
   }
 
   function deleteFriend() {
@@ -127,6 +186,25 @@ const ProfileSidebar = (props): JSX.Element => {
         >
           {friendButtonText}
         </Button>
+      ) : null}
+      {profileStatus === "pending" ? (
+        <SimpleDialog
+          open={dialogOpen}
+          onClose={() => {
+            setDialogOpen(false);
+          }}
+        >
+          <h1>Become friends? </h1>
+          <Button
+            variant="contained"
+            onClick={() => respondToFriend("confirm")}
+          >
+            COFIRM
+          </Button>
+          <Button variant="contained" onClick={() => respondToFriend("deny")}>
+            DENY
+          </Button>
+        </SimpleDialog>
       ) : null}
     </>
   );
