@@ -96,7 +96,7 @@ const Profile = () => {
     const fetchProfile = async () => {
       try {
         const res = await fetch(
-          `https://odin-facebook-api.onrender.com/api/users/${decoded.user._id}/profile`,
+          `https://odin-facebook-api.onrender.com/api/users/${profileId}/profile`,
           {
             method: "GET",
             mode: "cors",
@@ -106,12 +106,15 @@ const Profile = () => {
           }
         );
         const resJson = await res.json();
+        console.log(resJson);
       } catch (err) {
         console.log(err);
       }
     };
-    //fetchProfile();
-  }, [decoded.user._id]);
+    if (profileId) {
+      fetchProfile();
+    }
+  }, [profileId]);
 
   return (
     <>

@@ -164,7 +164,7 @@ const ProfileSidebar = (props): JSX.Element => {
       console.log(err);
     }
   }
-
+  // control button features
   useEffect(() => {
     switch (profileStatus) {
       case "self":
@@ -192,6 +192,7 @@ const ProfileSidebar = (props): JSX.Element => {
         setFriendButtonVisible(false);
     }
   }, [profileStatus]);
+
   return (
     <>
       <div>status: {profileStatus}</div>
