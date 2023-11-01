@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 import Button from "@mui/material/Button";
 import SimpleDialog from "@mui/material/Dialog";
+import Box from "@mui/material/Box";
 
 import jwtDecode, { JwtPayload } from "jwt-decode";
 
@@ -189,21 +190,23 @@ const ProfileSidebar = (props): JSX.Element => {
       ) : null}
       {profileStatus === "pending" ? (
         <SimpleDialog
-          open={dialogOpen}
+          open={true}
           onClose={() => {
-            setDialogOpen(false);
+            setDialogOpen(dialogOpen);
           }}
         >
-          <h1>Become friends? </h1>
-          <Button
-            variant="contained"
-            onClick={() => respondToFriend("confirm")}
-          >
-            COFIRM
-          </Button>
-          <Button variant="contained" onClick={() => respondToFriend("deny")}>
-            DENY
-          </Button>
+          <Box mx={4} my={4} display="flex" alignItems="center" gap={3}>
+            <h3>Become friends? </h3>
+            <Button
+              variant="contained"
+              onClick={() => respondToFriend("confirm")}
+            >
+              CONFIRM
+            </Button>
+            <Button variant="contained" onClick={() => respondToFriend("deny")}>
+              DENY
+            </Button>
+          </Box>
         </SimpleDialog>
       ) : null}
     </>
