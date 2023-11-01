@@ -209,7 +209,7 @@ const ProfileSidebar = (props): JSX.Element => {
       ) : null}
       {profileStatus === "pending" ? (
         <SimpleDialog
-          open={true}
+          open={dialogOpen}
           onClose={() => {
             setDialogOpen(dialogOpen);
           }}
