@@ -31,7 +31,6 @@ const ProfileSidebar = (props): JSX.Element => {
   const [friendButtonVisible, setFriendButtonVisible] =
     useState<boolean>(false);
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
-  const [dialogValue, setDialogValue] = useState("none");
 
   function clickFriendButton() {
     switch (profileStatus) {
