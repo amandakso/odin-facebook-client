@@ -139,10 +139,30 @@ const ProfileSidebar = (props): JSX.Element => {
     }
   }
 
-  function deleteFriend() {
-    console.log("TBD delete friend");
-    // delete friend
-    // refresh page
+  async function deleteFriend() {
+    try {
+      const res = await fetch(
+        `https://odin-facebook-api.onrender.com/api/users/${props.profileId}/friends/unfriend`,
+        {
+          method: "DELETE",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `bearer ${token}`,
+          },
+        }
+      );
+      const resJson = await res.json();
+      if (resJson.status === "success") {
+        console.log(resJson.message);
+        window.location.reload();
+      }
+      if (resJson.status === "error") {
+        console.log(resJson.error);
+      }
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   useEffect(() => {
