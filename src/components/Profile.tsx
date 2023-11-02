@@ -5,6 +5,7 @@ import Grid from "@mui/material/Grid";
 
 import jwtDecode, { JwtPayload } from "jwt-decode";
 import ProfileSidebar from "./ProfileSidebar";
+import NewPost from "./NewPost";
 
 declare module "jwt-decode" {
   export interface JwtPayload {
@@ -151,6 +152,7 @@ const Profile = () => {
         <Grid item xs={8}>
           <Grid item>
             <h2>RIGHT</h2>
+            <NewPost id={profileId} />
           </Grid>
         </Grid>
       </Grid>
