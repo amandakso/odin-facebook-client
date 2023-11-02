@@ -6,8 +6,12 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
+import Avatar from "@mui/material/Avatar";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { useEffect, useState } from "react";
 import jwtDecode, { JwtPayload } from "jwt-decode";
+import { blue } from "@mui/material/colors";
+import { styled } from "@mui/material/styles";
 
 declare module "jwt-decode" {
   export interface JwtPayload {
@@ -24,17 +28,87 @@ const Settings = () => {
   const [alertSeverity, setAlertSeverity] = useState<"error" | "success">(
     "error"
   );
-  const [profilePhoto, setProfilePhoto] = useState<BinaryData | null>(null);
+  const [profilePhoto, setProfilePhoto] = useState<string | null>(null);
   const [profileBio, setProfileBio] = useState<string>("");
   const [username, setUsername] = useState<string>("");
+
+  const VisuallyHiddenInput = styled("input")({
+    clip: "rect(0 0 0 0)",
+    clipPath: "inset(50%)",
+    height: 1,
+    overflow: "hidden",
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    whiteSpace: "nowrap",
+    width: 1,
+  });
 
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   };
 
-  const updatePhoto = (event: React.FormEvent<HTMLFormElement>) => {
+  const updatePhoto = async (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
-    console.log("tbd");
+    const token: string = sessionStorage.getItem("token") as string;
+    const decoded = jwtDecode<JwtPayload>(token);
+    if (event.target.files) {
+      const formdata = new FormData();
+      formdata.append("picture", event.target.files[0]);
+
+      console.log(formdata);
+
+      try {
+        const res = await fetch(
+          `https://odin-facebook-api.onrender.com/api/users/${decoded.user._id}/profile/update-photo`,
+          {
+            method: "PUT",
+            mode: "cors",
+            headers: {
+              Authorization: `bearer ${token}`,
+              "Access-Control-Allow-Origin": "http://localhost:5173",
+            },
+            body: formdata,
+          }
+        );
+        const resJson = await res.json();
+
+        if (res.status === 200) {
+          if (resJson.error) {
+            setAlertMessage(resJson.error);
+            if (alertSeverity != "error") {
+              setAlertSeverity("error");
+            }
+            setSnackbarOpen(true);
+          } else if (resJson.data) {
+            setAlertMessage(resJson.message);
+            if (alertSeverity != "success") {
+              setAlertSeverity("success");
+            }
+            setSnackbarOpen(true);
+            setProfilePhoto(resJson.data);
+            console.log(resJson.data);
+          } else {
+            return;
+          }
+        } else {
+          setAlertMessage("An error occurred. Unable to update photo.");
+          console.log(resJson.error);
+          if (alertSeverity != "error") {
+            setAlertSeverity("error");
+          }
+          setSnackbarOpen(true);
+        }
+      } catch (err) {
+        if (err instanceof Error) {
+          setAlertMessage(err.message);
+          if (alertSeverity != "error") {
+            setAlertSeverity("error");
+          }
+          setSnackbarOpen(true);
+        }
+      }
+    }
   };
 
   const updateBio = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -291,9 +365,10 @@ const Settings = () => {
                   <p>Current Photo:</p>
                 </Grid>
                 <Grid item xs>
-                  <div>
-                    <p>{profileBio}</p>
-                  </div>
+                  <Avatar
+                    sx={{ bgcolor: blue[500], width: 50, height: 50 }}
+                    alt={username}
+                  />
                 </Grid>
               </Grid>
             </Grid>
@@ -303,25 +378,24 @@ const Settings = () => {
                   <p>New Photo:</p>
                 </Grid>
                 <Grid item>
-                  <Box component="form" onSubmit={updateBio} noValidate>
-                    <Grid container columns={2} alignItems="center" spacing={4}>
-                      <Grid item>
-                        <TextField
-                          margin="normal"
-                          required
-                          id="bio"
-                          label="New Bio: "
-                          name="bio"
-                          autoFocus
+                  <Grid container columns={2} alignItems="center" spacing={4}>
+                    <Grid item>
+                      <Button
+                        component="label"
+                        variant="contained"
+                        startIcon={<CloudUploadIcon />}
+                      >
+                        Upload Photo
+                        <VisuallyHiddenInput
+                          name="picture"
+                          id="picture"
+                          type="file"
+                          accept="image/png, image/jpg, image/jpeg"
+                          onChange={updatePhoto}
                         />
-                      </Grid>
-                      <Grid item>
-                        <Button type="submit" variant="contained">
-                          Update Photo
-                        </Button>
-                      </Grid>
+                      </Button>
                     </Grid>
-                  </Box>
+                  </Grid>
                 </Grid>
               </Grid>
             </Grid>
