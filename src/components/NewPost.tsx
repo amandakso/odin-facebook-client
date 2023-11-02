@@ -7,10 +7,10 @@ import Textarea from "@mui/material/TextareaAutosize";
 const NewPost = (props) => {
   const [userid, setUserId] = useState<string | null>(null);
   const [postText, setPostText] = useState<string>("");
+  const [disable, setDisable] = useState<boolean>(true);
 
   const createPost = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
     console.log(postText);
   };
 
@@ -23,6 +23,15 @@ const NewPost = (props) => {
       setUserId(props.id);
     }
   }, [props.id]);
+
+  // disable button if id doesn't exist
+  useEffect(() => {
+    if (userid) {
+      setDisable(false);
+    } else {
+      setDisable(true);
+    }
+  }, [userid]);
 
   return (
     <>
@@ -39,7 +48,7 @@ const NewPost = (props) => {
         />
         <p>Characters: {postText.length}/1000</p>
 
-        <Button type="submit" variant="contained">
+        <Button type="submit" variant="contained" disabled={disable}>
           Create Post
         </Button>
       </Box>
