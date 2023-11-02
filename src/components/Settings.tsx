@@ -6,12 +6,12 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
-import Avatar from "@mui/material/Avatar";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { useEffect, useState } from "react";
 import jwtDecode, { JwtPayload } from "jwt-decode";
-import { blue } from "@mui/material/colors";
 import { styled } from "@mui/material/styles";
+
+import ProfilePhoto from "./ProfilePhoto";
 
 declare module "jwt-decode" {
   export interface JwtPayload {
@@ -55,8 +55,6 @@ const Settings = () => {
     if (event.target.files) {
       const formdata = new FormData();
       formdata.append("picture", event.target.files[0]);
-
-      console.log(formdata);
 
       try {
         const res = await fetch(
@@ -352,6 +350,7 @@ const Settings = () => {
     };
     fetchProfile();
   }, [alertSeverity]);
+
   return (
     <>
       <Container maxWidth="lg">
@@ -365,9 +364,10 @@ const Settings = () => {
                   <p>Current Photo:</p>
                 </Grid>
                 <Grid item xs>
-                  <Avatar
-                    sx={{ bgcolor: blue[500], width: 50, height: 50 }}
-                    alt={username}
+                  <ProfilePhoto
+                    username={username}
+                    photo={profilePhoto}
+                    size={250}
                   />
                 </Grid>
               </Grid>
