@@ -15,10 +15,15 @@ declare module "jwt-decode" {
   }
 }
 
-// Need to get profile info
-// friend profile if own profile
-// need to check friend status if not own profile
-// posts
+type friend = {
+  createdAt: string; // date
+  recipient: string; // userid
+  requester: string; //userid
+  status: number; // 0-3
+  updatedAt: string; // date
+  __v: number;
+  _id: string; // friendship id
+};
 
 const Profile = () => {
   const { username } = useParams<{ username?: string }>();
@@ -29,6 +34,11 @@ const Profile = () => {
     "self" | "friend" | "requested" | "pending" | "other" | null
   >(null);
   const [profileId, setProfileId] = useState<string | null>(null);
+  const [profileBio, setProfileBio] = useState<string | null>(null);
+  const [profilePhoto, setProfilePhoto] = useState<string | null>(null);
+  const [profileFriends, setProfileFriends] = useState<Array<friend> | null>(
+    null
+  );
 
   // Check if profile status
   useEffect(() => {
@@ -106,7 +116,13 @@ const Profile = () => {
           }
         );
         const resJson = await res.json();
-        console.log(resJson);
+        if (resJson.error) {
+          console.log(resJson.error);
+        } else {
+          setProfileBio(resJson.bio);
+          setProfilePhoto(resJson.photo);
+          setProfileFriends(resJson.friends);
+        }
       } catch (err) {
         console.log(err);
       }
@@ -118,12 +134,18 @@ const Profile = () => {
 
   return (
     <>
-      <h1> {username} profile</h1>
       <Grid container spacing={2}>
         <Grid item xs={4}>
           <Grid item>
             <h2>LEFT</h2>
-            <ProfileSidebar status={profileStatus} profileId={profileId} />
+            <ProfileSidebar
+              profileId={profileId}
+              username={username}
+              bio={profileBio}
+              photo={profilePhoto}
+              friends={profileFriends}
+              status={profileStatus}
+            />
           </Grid>
         </Grid>
         <Grid item xs={8}>

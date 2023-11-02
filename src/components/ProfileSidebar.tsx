@@ -5,6 +5,7 @@ import SimpleDialog from "@mui/material/Dialog";
 import Box from "@mui/material/Box";
 
 import jwtDecode, { JwtPayload } from "jwt-decode";
+import ProfilePhoto from "./ProfilePhoto";
 
 declare module "jwt-decode" {
   export interface JwtPayload {
@@ -195,9 +196,8 @@ const ProfileSidebar = (props): JSX.Element => {
 
   return (
     <>
-      <div>status: {profileStatus}</div>
-      <div>id: {props.profileId}</div>
-      <div>PROFILE IMG PLACEHOLDER</div>
+      <ProfilePhoto username={props.username} photo={props.photo} size={200} />
+      <div>{props.username}</div>
       <div>FRIENDS LIST PLACEHOLDER</div>
       {friendButtonVisible ? (
         <Button
