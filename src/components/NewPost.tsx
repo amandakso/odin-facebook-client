@@ -9,6 +9,9 @@ const NewPost = () => {
 
   const createPost = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    const token: string = sessionStorage.getItem("token") as string;
+
     try {
       const res = await fetch(
         `https://odin-facebook-api.onrender.com/api/posts/`,
@@ -17,11 +20,25 @@ const NewPost = () => {
           mode: "cors",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `bearer ${token}`,
           },
-          body: postText,
+          body: JSON.stringify({
+            text: postText,
+          }),
         }
       );
       const resJson = await res.json();
+
+      if (resJson.errors) {
+        console.log(resJson.errors);
+      } else if (resJson.error) {
+        console.log(resJson.error);
+      } else if (resJson.success) {
+        console.log(resJson.message);
+        window.location.reload();
+      } else {
+        console.log("error");
+      }
     } catch (err) {
       console.log(err);
     }
