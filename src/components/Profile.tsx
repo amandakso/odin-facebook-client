@@ -102,6 +102,7 @@ const Profile = () => {
     };
     getProfileId();
   }, [currentUser, username]);
+
   // Get current profile info: photo, bio, username; check status
   useEffect(() => {
     const fetchProfile = async () => {
@@ -132,6 +133,42 @@ const Profile = () => {
       fetchProfile();
     }
   }, [profileId]);
+
+  // Get posts if user is self or friend
+
+  useEffect(() => {
+    const getProfilePosts = async (id: string) => {
+      try {
+        const res = await fetch(
+          `https://odin-facebook-api.onrender.com/api/posts/user/${id}`,
+          {
+            method: "GET",
+            mode: "cors",
+            headers: {
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "http://localhost:5173",
+            },
+          }
+        );
+
+        const resJson = await res.json();
+        if (resJson.error) {
+          console.log(resJson.error);
+        } else if (resJson.posts) {
+          console.log(resJson.posts);
+        } else {
+          return;
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    if (profileStatus === "self" || profileStatus === "friend") {
+      if (profileId) {
+        getProfilePosts(profileId);
+      }
+    }
+  }, [profileStatus, profileId]);
 
   return (
     <>
