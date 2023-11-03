@@ -4,34 +4,32 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Textarea from "@mui/material/TextareaAutosize";
 
-const NewPost = (props) => {
-  const [userid, setUserId] = useState<string | null>(null);
+const NewPost = () => {
   const [postText, setPostText] = useState<string>("");
-  const [disable, setDisable] = useState<boolean>(true);
 
-  const createPost = (event: React.FormEvent<HTMLFormElement>) => {
+  const createPost = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(postText);
+    try {
+      const res = await fetch(
+        `https://odin-facebook-api.onrender.com/api/posts/`,
+        {
+          method: "POST",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: postText,
+        }
+      );
+      const resJson = await res.json();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setPostText(event.target.value);
   };
-
-  useEffect(() => {
-    if (props.id) {
-      setUserId(props.id);
-    }
-  }, [props.id]);
-
-  // disable button if id doesn't exist
-  useEffect(() => {
-    if (userid) {
-      setDisable(false);
-    } else {
-      setDisable(true);
-    }
-  }, [userid]);
 
   return (
     <>
@@ -48,7 +46,7 @@ const NewPost = (props) => {
         />
         <p>Characters: {postText.length}/1000</p>
 
-        <Button type="submit" variant="contained" disabled={disable}>
+        <Button type="submit" variant="contained">
           Create Post
         </Button>
       </Box>

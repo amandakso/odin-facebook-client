@@ -152,7 +152,7 @@ const Profile = () => {
         <Grid item xs={8}>
           <Grid item>
             <h2>RIGHT</h2>
-            <NewPost id={profileId} />
+            <NewPost />
           </Grid>
         </Grid>
       </Grid>
