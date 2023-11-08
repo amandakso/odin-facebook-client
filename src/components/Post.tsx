@@ -1,5 +1,6 @@
 import Box from "@mui/material/Box";
 import Textarea from "@mui/material/TextareaAutosize";
+import Grid from "@mui/material/Grid";
 import { useEffect, useState } from "react";
 
 import ProfilePhoto from "./ProfilePhoto";
@@ -37,20 +38,38 @@ const Post = (props) => {
   }, [props.authorid]);
   return (
     <>
-      <Box>
-        <ProfilePhoto username={props.username} photo={photo} size={75} />
-        <h3>{props.username}</h3>
-        <Box component="form" noValidate>
-          <Textarea
-            aria-label="post textarea"
-            maxRows={10}
-            maxLength={1000}
-            readOnly={true}
-            //onChange={handleTextChange}
-            value={props.text}
-            style={{ resize: "none", width: "80%" }}
-          />
-        </Box>
+      <Box style={{ width: "80%" }}>
+        <Grid container spacing={2}>
+          <Grid container item xs={12} spacing={1}>
+            <Grid item xs="auto">
+              <ProfilePhoto username={props.username} photo={photo} size={75} />
+            </Grid>
+            <Grid item xs={10}>
+              <p style={{ textAlign: "left" }}>{props.username}</p>
+            </Grid>
+          </Grid>
+          <Grid item xs={12}>
+            <Grid item>
+              <Box component="form" noValidate>
+                <Textarea
+                  aria-label="post textarea"
+                  maxRows={10}
+                  maxLength={1000}
+                  readOnly={true}
+                  //onChange={handleTextChange}
+                  value={props.text}
+                  style={{
+                    resize: "none",
+                    width: "80%",
+                    border: "none",
+                    outline: "none",
+                    textAlign: "left",
+                  }}
+                />
+              </Box>
+            </Grid>
+          </Grid>
+        </Grid>
       </Box>
     </>
   );
