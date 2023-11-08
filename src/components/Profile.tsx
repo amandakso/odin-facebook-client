@@ -6,6 +6,7 @@ import Grid from "@mui/material/Grid";
 import jwtDecode, { JwtPayload } from "jwt-decode";
 import ProfileSidebar from "./ProfileSidebar";
 import NewPost from "./NewPost";
+import Posts from "./Posts";
 
 declare module "jwt-decode" {
   export interface JwtPayload {
@@ -26,6 +27,15 @@ type friend = {
   _id: string; // friendship id
 };
 
+type post = {
+  author: { _id: string; username: string };
+  createdAt: string; // date
+  text: string;
+  updatedAt: string; // date
+  __v: number;
+  _id: string; //postid
+};
+
 const Profile = () => {
   const { username } = useParams<{ username?: string }>();
   const token: string = sessionStorage.getItem("token") as string;
@@ -40,6 +50,7 @@ const Profile = () => {
   const [profileFriends, setProfileFriends] = useState<Array<friend> | null>(
     null
   );
+  const [posts, setPosts] = useState<Array<post> | null>(null);
 
   // Check if profile status
   useEffect(() => {
@@ -155,7 +166,7 @@ const Profile = () => {
         if (resJson.error) {
           console.log(resJson.error);
         } else if (resJson.posts) {
-          console.log(resJson.posts);
+          setPosts(resJson.posts);
         } else {
           return;
         }
@@ -190,6 +201,7 @@ const Profile = () => {
           <Grid item>
             <h2>RIGHT</h2>
             <NewPost />
+            {posts ? <Posts posts={posts} /> : null}
           </Grid>
         </Grid>
       </Grid>
