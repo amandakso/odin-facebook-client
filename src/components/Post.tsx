@@ -1,12 +1,14 @@
 import Box from "@mui/material/Box";
 import Textarea from "@mui/material/TextareaAutosize";
 import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
 import { useEffect, useState } from "react";
 
 import ProfilePhoto from "./ProfilePhoto";
 
 const Post = (props) => {
   const [photo, setPhoto] = useState<string>("");
+  const [readOnly, setReadOnly] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchProfile = async (id: string) => {
@@ -44,7 +46,7 @@ const Post = (props) => {
             <Grid item xs="auto">
               <ProfilePhoto username={props.username} photo={photo} size={75} />
             </Grid>
-            <Grid item xs={10}>
+            <Grid item xs={8}>
               <p style={{ textAlign: "left" }}>{props.username}</p>
             </Grid>
           </Grid>
@@ -55,7 +57,7 @@ const Post = (props) => {
                   aria-label="post textarea"
                   maxRows={10}
                   maxLength={1000}
-                  readOnly={true}
+                  readOnly={readOnly}
                   //onChange={handleTextChange}
                   value={props.text}
                   style={{
@@ -67,6 +69,14 @@ const Post = (props) => {
                   }}
                 />
               </Box>
+            </Grid>
+            <Grid item style={{ textAlign: "left" }}>
+              <Button type="button" variant="contained">
+                Like
+              </Button>
+              <Button type="button" variant="contained">
+                Comment
+              </Button>
             </Grid>
           </Grid>
         </Grid>
