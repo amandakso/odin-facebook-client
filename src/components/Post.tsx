@@ -95,12 +95,12 @@ const Post = (props) => {
       );
 
       const resJson = await res.json();
-      console.log(resJson);
-      console.log("click");
 
       if (resJson.error) {
         console.log(resJson.error);
       }
+      const likes = resJson.likes ? resJson.likes.users.length : 0;
+      setNumLikes(likes ? likes : 0);
     } catch (err) {
       console.log(err);
     }
