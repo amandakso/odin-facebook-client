@@ -80,10 +80,11 @@ const Post = (props) => {
 
       if (resJson.error) {
         console.log(resJson.error);
+      } else {
+        const likes = resJson.likes ? resJson.likes.users : [];
+        setIsLiked(true);
+        setNumLikes(likes.length ? likes.length : 0);
       }
-      const likes = resJson.likes ? resJson.likes.users : [];
-      setIsLiked(true);
-      setNumLikes(likes.length ? likes.length : 0);
     } catch (err) {
       console.log(err);
     }
@@ -114,10 +115,11 @@ const Post = (props) => {
 
       if (resJson.error) {
         console.log(resJson.error);
+      } else {
+        const likes = resJson.likes ? resJson.likes.users : [];
+        setIsLiked(false);
+        setNumLikes(likes.length ? likes.length : 0);
       }
-      const likes = resJson.likes ? resJson.likes.users : [];
-      setIsLiked(false);
-      setNumLikes(likes.length ? likes.length : 0);
     } catch (err) {
       console.log(err);
     }
