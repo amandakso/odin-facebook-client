@@ -6,7 +6,7 @@ import { useEffect, useState, useCallback } from "react";
 import jwtDecode, { JwtPayload } from "jwt-decode";
 
 import ProfilePhoto from "./ProfilePhoto";
-import Posts from "./Posts";
+import Comments from "./Comments";
 
 declare module "jwt-decode" {
   export interface JwtPayload {
@@ -27,7 +27,7 @@ type comment = {
   author: { _id: string; username: string };
   text: string;
   createdAt: string;
-  updated: string;
+  updatedAt: string;
   __v: number;
   _id: string; // comment id
 };
@@ -270,7 +270,7 @@ const Post = (props) => {
           </Grid>
           {props.postid ? (
             <Grid item xs={12}>
-              <Posts postid={props.postid} />
+              <Comments comments={comments} />
             </Grid>
           ) : null}
         </Grid>

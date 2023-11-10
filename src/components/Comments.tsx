@@ -1,21 +1,38 @@
 import { useEffect, useState } from "react";
 
+import Comment from "./Comment";
+
 type comment = {
   postid: string;
   author: { _id: string; username: string };
   text: string;
   createdAt: string;
-  updated: string;
+  updatedAt: string;
   __v: number;
   _id: string; // comment id
 };
 
-const Comments = () => {
+const Comments = (props) => {
   const [comments, setComments] = useState<comment[] | null>(null);
 
+  useEffect(() => {
+    setComments(props.comments);
+  }, [props.comments]);
   return (
     <>
-      <h1>Comments</h1>
+      {comments
+        ? comments.map((comment) => (
+            <Comment
+              key={comment._id}
+              authorid={comment.author._id}
+              username={comment.author.username}
+              createdAt={comment.createdAt}
+              updatedAt={comment.updatedAt}
+              text={comment.text}
+              commentid={comment._id}
+            />
+          ))
+        : null}
     </>
   );
 };

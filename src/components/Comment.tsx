@@ -1,4 +1,4 @@
-const Comment = () => {
+const Comment = (props) => {
   return (
     <>
       <h1>Comment</h1>
