@@ -111,13 +111,46 @@ const Post = (props) => {
       );
 
       const resJson = await res.json();
-      console.log(resJson.likes?.users);
 
       if (resJson.error) {
         console.log(resJson.error);
       }
       const likes = resJson.likes ? resJson.likes.users : [];
       setIsLiked(true);
+      setNumLikes(likes.length ? likes.length : 0);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const handleDislikeClick = async (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+    const postid = props.postid;
+    if (!postid) {
+      console.log("No postid found");
+      return;
+    }
+    try {
+      const res = await fetch(
+        `https://odin-facebook-api.onrender.com/api/posts/${postid}/likes/unlike`,
+        {
+          method: "PUT",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `bearer ${token}`,
+          },
+        }
+      );
+
+      const resJson = await res.json();
+
+      if (resJson.error) {
+        console.log(resJson.error);
+      }
+      const likes = resJson.likes ? resJson.likes.users : [];
+      setIsLiked(false);
       setNumLikes(likes.length ? likes.length : 0);
     } catch (err) {
       console.log(err);
@@ -134,7 +167,7 @@ const Post = (props) => {
     if (props.postid) {
       getPostLikes(props.postid);
     }
-  }, [props.postid]);
+  }, [props.postid, getPostLikes]);
 
   return (
     <>
@@ -172,13 +205,23 @@ const Post = (props) => {
               <p>
                 {numLikes} {numLikes === 1 ? "like" : "likes"}
               </p>
-              <Button
-                type="button"
-                variant="contained"
-                onClick={handleLikeClick}
-              >
-                Like
-              </Button>
+              {isLiked ? (
+                <Button
+                  type="button"
+                  variant="contained"
+                  onClick={handleDislikeClick}
+                >
+                  Unlike
+                </Button>
+              ) : (
+                <Button
+                  type="button"
+                  variant="contained"
+                  onClick={handleLikeClick}
+                >
+                  Like
+                </Button>
+              )}
               <Button type="button" variant="contained">
                 Comment
               </Button>
