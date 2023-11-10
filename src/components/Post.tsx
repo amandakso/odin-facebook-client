@@ -2,10 +2,11 @@ import Box from "@mui/material/Box";
 import Textarea from "@mui/material/TextareaAutosize";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import jwtDecode, { JwtPayload } from "jwt-decode";
 
 import ProfilePhoto from "./ProfilePhoto";
+import Posts from "./Posts";
 
 declare module "jwt-decode" {
   export interface JwtPayload {
@@ -51,41 +52,6 @@ const Post = (props) => {
     } catch (err) {
       console.log(err);
     }
-  };
-
-  const getPostLikes = async (postid: string) => {
-    try {
-      const res = await fetch(
-        `https://odin-facebook-api.onrender.com/api/posts/${postid}/likes`,
-        {
-          method: "GET",
-          mode: "cors",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      const resJson = await res.json();
-
-      if (resJson.error) {
-        console.log(resJson.error);
-      }
-      const likes = resJson.likes ? resJson.likes.users : [];
-      checkIfLiked(likes);
-      setNumLikes(likes.length ? likes.length : 0);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const checkIfLiked = (likes: likes[]) => {
-    likes.forEach((like) => {
-      if (like._id === currentUser) {
-        setIsLiked(true);
-        return;
-      }
-    });
   };
 
   const handleLikeClick = async (
@@ -164,10 +130,43 @@ const Post = (props) => {
   }, [props.authorid]);
 
   useEffect(() => {
+    const checkIfLiked = (likes: likes[]) => {
+      likes.forEach((like) => {
+        if (like._id === currentUser) {
+          setIsLiked(true);
+          return;
+        }
+      });
+    };
+    const getPostLikes = async (postid: string) => {
+      try {
+        const res = await fetch(
+          `https://odin-facebook-api.onrender.com/api/posts/${postid}/likes`,
+          {
+            method: "GET",
+            mode: "cors",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        const resJson = await res.json();
+
+        if (resJson.error) {
+          console.log(resJson.error);
+        }
+        const likes = resJson.likes ? resJson.likes.users : [];
+        checkIfLiked(likes);
+        setNumLikes(likes.length ? likes.length : 0);
+      } catch (err) {
+        console.log(err);
+      }
+    };
     if (props.postid) {
       getPostLikes(props.postid);
     }
-  }, [props.postid, getPostLikes]);
+  }, [props.postid, currentUser]);
 
   return (
     <>
@@ -227,6 +226,11 @@ const Post = (props) => {
               </Button>
             </Grid>
           </Grid>
+          {props.postid ? (
+            <Grid item xs={12}>
+              <Posts postid={props.postid} />
+            </Grid>
+          ) : null}
         </Grid>
       </Box>
     </>
