@@ -22,6 +22,16 @@ type likes = {
   username: string;
 };
 
+type comment = {
+  postid: string;
+  author: { _id: string; username: string };
+  text: string;
+  createdAt: string;
+  updated: string;
+  __v: number;
+  _id: string; // comment id
+};
+
 const Post = (props) => {
   const token: string = sessionStorage.getItem("token") as string;
   const decoded = jwtDecode<JwtPayload>(token);
@@ -30,6 +40,7 @@ const Post = (props) => {
   const [readOnly, setReadOnly] = useState<boolean>(true);
   const [numLikes, setNumLikes] = useState<number>(0);
   const [isLiked, setIsLiked] = useState<boolean>(false);
+  const [comments, setComments] = useState<comment[] | null>(null);
 
   const fetchProfile = async (authorid: string) => {
     try {
@@ -48,6 +59,29 @@ const Post = (props) => {
         console.log(resJson.error);
       } else {
         setPhoto(resJson.photo);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const fetchComments = async (postid: string) => {
+    try {
+      const res = await fetch(
+        `https://odin-facebook-api.onrender.com/api/posts/${postid}/comments`,
+        {
+          method: "GET",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const resJson = await res.json();
+      if (resJson.error) {
+        console.log(resJson.error);
+      } else {
+        setComments(resJson.comments);
       }
     } catch (err) {
       console.log(err);
@@ -130,6 +164,12 @@ const Post = (props) => {
       fetchProfile(props.authorid);
     }
   }, [props.authorid]);
+
+  useEffect(() => {
+    if (props.postid) {
+      fetchComments(props.postid);
+    }
+  }, [props.postid]);
 
   useEffect(() => {
     const checkIfLiked = (likes: likes[]) => {

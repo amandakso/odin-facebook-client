@@ -15,6 +15,7 @@ const Posts = (props): JSX.Element => {
   useEffect(() => {
     setPosts(props.posts);
   }, [props.posts]);
+
   return (
     <>
       {posts
