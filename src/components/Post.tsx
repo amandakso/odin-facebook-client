@@ -2,6 +2,7 @@ import Box from "@mui/material/Box";
 import Textarea from "@mui/material/TextareaAutosize";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 import { useEffect, useState, useCallback } from "react";
 import jwtDecode, { JwtPayload } from "jwt-decode";
 
@@ -41,6 +42,7 @@ const Post = (props) => {
   const [numLikes, setNumLikes] = useState<number>(0);
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [comments, setComments] = useState<comment[] | null>(null);
+  const [commentText, setCommentText] = useState<string>("");
 
   const fetchProfile = async (authorid: string) => {
     try {
@@ -159,6 +161,50 @@ const Post = (props) => {
     }
   };
 
+  const handleCommentTextChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setCommentText(event.target.value);
+  };
+
+  const submitComment = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const postid = props.postid;
+    if (!postid) {
+      console.log("No postid found");
+      return;
+    }
+    try {
+      const res = await fetch(
+        `https://odin-facebook-api.onrender.com/api/posts/${postid}/comments`,
+        {
+          method: "POST",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `bearer ${token}`,
+          },
+          body: JSON.stringify({
+            text: commentText,
+          }),
+        }
+      );
+
+      const resJson = await res.json();
+      if (resJson.errors) {
+        console.log(resJson.errors);
+      } else if (resJson.error) {
+        console.log(resJson.error);
+      } else {
+        if (resJson.data) {
+          setComments((prev) => [...(prev as comment[]), resJson.data]);
+        }
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     if (props.authorid) {
       fetchProfile(props.authorid);
@@ -263,9 +309,6 @@ const Post = (props) => {
                   Like
                 </Button>
               )}
-              <Button type="button" variant="contained">
-                Comment
-              </Button>
             </Grid>
           </Grid>
           {props.postid ? (
@@ -273,6 +316,25 @@ const Post = (props) => {
               <Comments comments={comments} />
             </Grid>
           ) : null}
+        </Grid>
+        <Grid item xs={12} style={{ textAlign: "left", alignItems: "center" }}>
+          <Box component="form" noValidate onSubmit={submitComment}>
+            <Grid container>
+              <TextField
+                id="commentField"
+                label="comment"
+                variant="outlined"
+                placeholder="Write a comment."
+                multiline
+                inputProps={{ maxLength: 500 }}
+                value={commentText}
+                onChange={handleCommentTextChange}
+              />
+              <Button type="submit" variant="contained">
+                Comment
+              </Button>
+            </Grid>
+          </Box>
         </Grid>
       </Box>
     </>
