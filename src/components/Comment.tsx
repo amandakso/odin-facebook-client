@@ -7,18 +7,6 @@ import ProfilePhoto from "./ProfilePhoto";
 
 const Comment = (props) => {
   const [photo, setPhoto] = useState<string>("");
-  /**
-   * 
-   *             <Comment
-              key={comment._id}
-              authorid={comment.author._id}
-              username={comment.author.username}
-              createdAt={comment.createdAt}
-              updatedAt={comment.updatedAt}
-              text={comment.text}
-              commentid={comment._id}
-            />
-   */
 
   const fetchProfile = async (authorid: string) => {
     try {
