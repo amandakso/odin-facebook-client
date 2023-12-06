@@ -1,5 +1,7 @@
 import jwtDecode, { JwtPayload } from "jwt-decode";
 import { useEffect, useState } from "react";
+import HomeFeed from "./HomeFeed";
+import { ContactSupportRounded } from "@mui/icons-material";
 
 declare module "jwt-decode" {
   export interface JwtPayload {
@@ -14,8 +16,10 @@ const Home = () => {
   const token: string = sessionStorage.getItem("token") as string;
   const decoded = jwtDecode<JwtPayload>(token);
   const currentUser: string | undefined = decoded.user._id;
-  const [friends, setFriends] = useState<string[]>(new Array<string>());
+  const [authors, setAuthors] = useState<Set<string>>(new Set<string>());
   // need friends id to get posts
+
+  // fix set and storing friend userids and own
 
   useEffect(() => {
     const getFriends = async (user: string) => {
@@ -38,15 +42,15 @@ const Home = () => {
             console.log(resJson.error);
           } else {
             const friendsArray = resJson.friends;
-            const arr: string[] = [];
+            const prevAuthors = authors;
             friendsArray.forEach((item) => {
               if (item.status === 3) {
                 const recipient: string = item.recipient;
                 const requester: string = item.requester;
                 if (recipient === currentUser) {
-                  arr.push(requester);
+                  prevAuthors.add(requester);
                 } else if (requester === currentUser) {
-                  arr.push(recipient);
+                  prevAuthors.add(recipient);
                 } else {
                   console.log("error occurred");
                   return;
@@ -56,7 +60,7 @@ const Home = () => {
               }
             });
 
-            setFriends((prev) => prev.concat(arr));
+            setAuthors(prevAuthors);
           }
         } catch (err) {
           console.log(err);
@@ -69,12 +73,19 @@ const Home = () => {
     };
     if (currentUser) {
       getFriends(currentUser);
+      // add current user to authors
+      if (!authors.has(currentUser)) {
+        setAuthors((prev) => prev.add(currentUser));
+      }
     }
-  }, [currentUser]);
+  }, [currentUser, authors]);
+
+  console.log(authors);
 
   return (
     <>
       <h1>Home Page</h1>
+      <HomeFeed authors={authors} />
     </>
   );
 };
