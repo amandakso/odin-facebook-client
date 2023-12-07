@@ -42,15 +42,15 @@ const Home = () => {
             console.log(resJson.error);
           } else {
             const friendsArray = resJson.friends;
-            const prevAuthors = authors;
+            const arr: string[] = [];
             friendsArray.forEach((item) => {
               if (item.status === 3) {
                 const recipient: string = item.recipient;
                 const requester: string = item.requester;
                 if (recipient === currentUser) {
-                  prevAuthors.add(requester);
+                  arr.push(requester);
                 } else if (requester === currentUser) {
-                  prevAuthors.add(recipient);
+                  arr.push(recipient);
                 } else {
                   console.log("error occurred");
                   return;
@@ -59,8 +59,7 @@ const Home = () => {
                 return;
               }
             });
-
-            setAuthors(prevAuthors);
+            setAuthors(new Set(arr));
           }
         } catch (err) {
           console.log(err);
@@ -73,14 +72,14 @@ const Home = () => {
     };
     if (currentUser) {
       getFriends(currentUser);
-      // add current user to authors
-      if (!authors.has(currentUser)) {
-        setAuthors((prev) => prev.add(currentUser));
-      }
+    }
+  }, [currentUser]);
+
+  useEffect(() => {
+    if (!authors.has(currentUser)) {
+      setAuthors((prev) => prev.add(currentUser));
     }
   }, [currentUser, authors]);
-
-  console.log(authors);
 
   return (
     <>
