@@ -7,6 +7,7 @@ import ProfilePhoto from "./ProfilePhoto";
 
 const Comment = (props) => {
   const [photo, setPhoto] = useState<string>("");
+  const [updatedAt, setUpdatedAt] = useState<string>("");
 
   const fetchProfile = async (authorid: string) => {
     try {
@@ -37,6 +38,21 @@ const Comment = (props) => {
     }
   }, [props.authorid]);
 
+  useEffect(() => {
+    if (props.updatedAt) {
+      const date = new Date(props.updatedAt);
+      setUpdatedAt(
+        date.toLocaleString("en-US", {
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+          hour: "numeric",
+          minute: "2-digit",
+        })
+      );
+    }
+  }, [props.updatedAt]);
+
   return (
     <>
       <Box style={{ width: "80%" }}>
@@ -47,6 +63,7 @@ const Comment = (props) => {
             </Grid>
             <Grid item xs={8}>
               <p style={{ textAlign: "left" }}>{props.username}</p>
+              <p style={{ textAlign: "left" }}>{updatedAt}</p>
             </Grid>
           </Grid>
           <Grid item xs={12}>
