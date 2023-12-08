@@ -69,23 +69,27 @@ const HomeFeed = (props) => {
 
   useEffect(() => {
     if (posts.length > 0) {
+      //sort posts
+      const sorted = posts.sort((a, b) => {
+        const dateA = new Date(a.updatedAt).valueOf();
+        const dateB = new Date(b.updatedAt).valueOf();
+        // console.log("dateA: " + dateA);
+        // console.log("dateB: " + dateB);
+        if (dateA > dateB) {
+          return -1;
+        }
+        return 1;
+      });
+
       console.log(posts);
-      // sort posts
-      /*const sorted = posts.sort((a, b) => {
-        console.log("a: " + a[0]);
-        console.log("b: " + b[0]);
-        const dateA = new Date(a[0].updatedAt).valueOf();
-         const dateB = new Date(b[0].updatedAt).valueOf();
-          if (dateA > dateB) {
-           return -1;
-          }
-      /  return 1; */
+      console.log(sorted);
+      setSortedPosts(sorted);
     }
   }, [posts]);
 
   return (
     <>
-      <Posts posts={posts} />
+      <Posts posts={sortedPosts} />
     </>
   );
 };
