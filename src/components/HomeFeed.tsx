@@ -10,8 +10,12 @@ type post = {
 };
 
 const HomeFeed = (props) => {
-  const [authors, setAuthors] = useState<string[]>([]);
-  const [posts, setPosts] = useState<post[][]>([]);
+  const [authors, setAuthors] = useState<Set<string>>(new Set<string>());
+  const [authorsAdded, setAuthorsAdded] = useState<Set<string>>(
+    new Set<string>()
+  );
+  const [posts, setPosts] = useState<post[]>([]);
+  const [sortedPosts, setSortedPosts] = useState<post[]>([]);
 
   const fetchPosts = async (userid: string) => {
     try {
@@ -29,11 +33,12 @@ const HomeFeed = (props) => {
       const resJson = await res.json();
       if (resJson.error) {
         console.log(resJson.error);
+        return;
       } else if (resJson.posts) {
         if (resJson.posts.length > 0) {
           setPosts((prev) => prev.concat(resJson.posts));
         }
-        console.log(resJson.posts);
+        return;
       } else {
         return;
       }
@@ -49,13 +54,33 @@ const HomeFeed = (props) => {
   }, [props.authors]);
 
   useEffect(() => {
-    if (authors) {
-      authors.forEach((author) => {
-        fetchPosts(author);
-        console.log("test");
+    if (authors.size > 0) {
+      const arr = [...authors];
+      //Array.from(selectedCity).map(...)
+      arr.map((author) => {
+        if (!authorsAdded.has(author)) {
+          setAuthorsAdded((prev) => prev.add(author));
+          fetchPosts(author);
+        }
       });
     }
-  }, [authors]);
+  }, [authors, authorsAdded]);
+
+  useEffect(() => {
+    if (posts.length > 0) {
+      console.log(posts);
+      // sort posts
+      /*const sorted = posts.sort((a, b) => {
+        console.log("a: " + a[0]);
+        console.log("b: " + b[0]);
+        const dateA = new Date(a[0].updatedAt).valueOf();
+         const dateB = new Date(b[0].updatedAt).valueOf();
+          if (dateA > dateB) {
+           return -1;
+          }
+      /  return 1; */
+    }
+  }, [posts]);
 
   return (
     <>
