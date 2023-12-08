@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Posts from "./Posts";
 
 type post = {
   author: { _id: string; username: string };
@@ -56,9 +57,9 @@ const HomeFeed = (props) => {
   useEffect(() => {
     if (authors.size > 0) {
       const arr = [...authors];
-      //Array.from(selectedCity).map(...)
       arr.map((author) => {
         if (!authorsAdded.has(author)) {
+          // prevent repeating adding posts from an author
           setAuthorsAdded((prev) => prev.add(author));
           fetchPosts(author);
         }
@@ -84,8 +85,7 @@ const HomeFeed = (props) => {
 
   return (
     <>
-      <h1>HomeFeed</h1>
-      <p>{authors}</p>
+      <Posts posts={posts} />
     </>
   );
 };
