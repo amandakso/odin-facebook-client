@@ -38,6 +38,7 @@ const Post = (props) => {
   const decoded = jwtDecode<JwtPayload>(token);
   const currentUser = decoded.user._id;
   const [photo, setPhoto] = useState<string>("");
+  const [updatedAt, setUpdatedAt] = useState<string>("");
   const [readOnly, setReadOnly] = useState<boolean>(true);
   const [numLikes, setNumLikes] = useState<number>(0);
   const [isLiked, setIsLiked] = useState<boolean>(false);
@@ -206,6 +207,21 @@ const Post = (props) => {
   };
 
   useEffect(() => {
+    if (props.updatedAt) {
+      const date = new Date(props.updatedAt);
+      setUpdatedAt(
+        date.toLocaleString("en-US", {
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+          hour: "numeric",
+          minute: "2-digit",
+        })
+      );
+    }
+  }, [props.updatedAt]);
+
+  useEffect(() => {
     if (props.authorid) {
       fetchProfile(props.authorid);
     }
@@ -266,6 +282,7 @@ const Post = (props) => {
             </Grid>
             <Grid item xs={8}>
               <p style={{ textAlign: "left" }}>{props.username}</p>
+              <p style={{ textAlign: "left" }}>{updatedAt}</p>
             </Grid>
           </Grid>
           <Grid item xs={12}>
