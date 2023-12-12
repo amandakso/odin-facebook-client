@@ -24,6 +24,7 @@ const Comments = (props) => {
         ? comments.map((comment) => (
             <Comment
               key={comment._id}
+              postAuthorId={props.postAuthorId}
               authorid={comment.author._id}
               username={comment.author.username}
               createdAt={comment.createdAt}

@@ -330,7 +330,7 @@ const Post = (props) => {
           </Grid>
           {props.postid ? (
             <Grid item xs={12}>
-              <Comments comments={comments} />
+              <Comments comments={comments} postAuthorId={props.authorid} />
             </Grid>
           ) : null}
         </Grid>

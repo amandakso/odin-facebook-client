@@ -2,12 +2,30 @@ import Box from "@mui/material/Box";
 import Textarea from "@mui/material/TextareaAutosize";
 import Grid from "@mui/material/Grid";
 import { useEffect, useState } from "react";
+import jwtDecode, { JwtPayload } from "jwt-decode";
+
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 import ProfilePhoto from "./ProfilePhoto";
+
+declare module "jwt-decode" {
+  export interface JwtPayload {
+    user: {
+      username: string;
+      _id: string;
+    };
+  }
+}
 
 const Comment = (props) => {
   const [photo, setPhoto] = useState<string>("");
   const [updatedAt, setUpdatedAt] = useState<string>("");
+  const [editAuthorized, setEditAuthorized] = useState<boolean>(false);
+  const [deleteAuthorized, setDeleteAuthorized] = useState<boolean>(false);
+  const token: string = sessionStorage.getItem("token") as string;
+  const decoded = jwtDecode<JwtPayload>(token);
+  const currentUser: string | undefined = decoded.user._id;
 
   const fetchProfile = async (authorid: string) => {
     try {
@@ -32,11 +50,42 @@ const Comment = (props) => {
     }
   };
 
+  const deleteComment = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    console.log(props.commentid);
+    console.log("delete comment button click");
+  };
+
   useEffect(() => {
     if (props.authorid) {
       fetchProfile(props.authorid);
     }
   }, [props.authorid]);
+
+  useEffect(() => {
+    // check if access to edit/delete comment granted
+    console.log("test");
+    if (currentUser) {
+      if (!props.authorid || !props.postAuthorId) {
+        setEditAuthorized(false);
+        setDeleteAuthorized(false);
+      } else {
+        if (props.authorid === currentUser) {
+          setEditAuthorized(true);
+          setDeleteAuthorized(true);
+        } else if (props.postAuthorId === currentUser) {
+          setEditAuthorized(false);
+          setDeleteAuthorized(true);
+        } else {
+          setEditAuthorized(false);
+          setDeleteAuthorized(false);
+        }
+      }
+    } else {
+      setEditAuthorized(false);
+      setDeleteAuthorized(false);
+    }
+  }, [props.postAuthorId, props.authorid, currentUser]);
 
   useEffect(() => {
     if (props.updatedAt) {
@@ -84,6 +133,11 @@ const Comment = (props) => {
                     textAlign: "left",
                   }}
                 />
+                {deleteAuthorized ? (
+                  <IconButton aria-label="delete" onClick={deleteComment}>
+                    <DeleteIcon />
+                  </IconButton>
+                ) : null}
               </Box>
             </Grid>
           </Grid>
