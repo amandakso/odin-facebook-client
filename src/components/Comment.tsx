@@ -50,10 +50,40 @@ const Comment = (props) => {
     }
   };
 
-  const deleteComment = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const deleteComment = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    console.log(props.commentid);
-    console.log("delete comment button click");
+
+    if (!props.postid || !props.commentid) {
+      console.log("Missing variables");
+      return;
+    }
+
+    try {
+      const res = await fetch(
+        //"/:postid/comments/:commentid"
+        `https://odin-facebook-api.onrender.com/api/posts/${props.postid}/comments/${props.commentid}`,
+        {
+          method: "DELETE",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `bearer ${token}`,
+          },
+        }
+      );
+
+      const resJson = await res.json();
+
+      if (resJson.error) {
+        console.log(resJson.error);
+      } else {
+        if (resJson.result) {
+          window.location.reload();
+        }
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {
