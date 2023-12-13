@@ -1,10 +1,13 @@
 import Box from "@mui/material/Box";
 import Textarea from "@mui/material/TextareaAutosize";
 import Grid from "@mui/material/Grid";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import jwtDecode, { JwtPayload } from "jwt-decode";
 
 import IconButton from "@mui/material/IconButton";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import CheckIcon from "@mui/icons-material/Check";
+import ClearIcon from "@mui/icons-material/Clear";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 import ProfilePhoto from "./ProfilePhoto";
@@ -23,6 +26,8 @@ const Comment = (props) => {
   const [updatedAt, setUpdatedAt] = useState<string>("");
   const [editAuthorized, setEditAuthorized] = useState<boolean>(false);
   const [deleteAuthorized, setDeleteAuthorized] = useState<boolean>(false);
+  const [readOnly, setReadOnly] = useState<boolean>(true);
+  const [commentText, setCommentText] = useState<string>("");
   const token: string = sessionStorage.getItem("token") as string;
   const decoded = jwtDecode<JwtPayload>(token);
   const currentUser: string | undefined = decoded.user._id;
@@ -86,6 +91,29 @@ const Comment = (props) => {
     }
   };
 
+  const editComment = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    console.log("TBD edit button");
+    //TODO edit api and check function
+  };
+
+  const allowEditComment = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    setReadOnly(false);
+  };
+
+  const cancelEdit = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    setReadOnly(true);
+  };
+
+  const handleCommentTextChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    event.preventDefault();
+    setCommentText(event.target.value);
+  };
+
   useEffect(() => {
     if (props.authorid) {
       fetchProfile(props.authorid);
@@ -93,8 +121,14 @@ const Comment = (props) => {
   }, [props.authorid]);
 
   useEffect(() => {
+    if (props.text) {
+      setCommentText(props.text);
+    }
+  }, [props.text]);
+
+  useEffect(() => {
     // check if access to edit/delete comment granted
-    console.log("test");
+
     if (currentUser) {
       if (!props.authorid || !props.postAuthorId) {
         setEditAuthorized(false);
@@ -152,9 +186,9 @@ const Comment = (props) => {
                   aria-label="post textarea"
                   maxRows={10}
                   maxLength={1000}
-                  //readOnly={readOnly}
-                  //onChange={handleTextChange}
-                  value={props.text}
+                  readOnly={readOnly}
+                  onChange={handleCommentTextChange}
+                  value={commentText}
                   style={{
                     resize: "none",
                     width: "80%",
@@ -163,6 +197,22 @@ const Comment = (props) => {
                     textAlign: "left",
                   }}
                 />
+                {editAuthorized ? (
+                  readOnly ? (
+                    <IconButton aria-label="edit" onClick={allowEditComment}>
+                      <ModeEditIcon />
+                    </IconButton>
+                  ) : (
+                    <>
+                      <IconButton aria-label="update" onClick={editComment}>
+                        <CheckIcon />
+                      </IconButton>
+                      <IconButton aria-label="cancel" onClick={cancelEdit}>
+                        <ClearIcon />
+                      </IconButton>
+                    </>
+                  )
+                ) : null}
                 {deleteAuthorized ? (
                   <IconButton aria-label="delete" onClick={deleteComment}>
                     <DeleteIcon />

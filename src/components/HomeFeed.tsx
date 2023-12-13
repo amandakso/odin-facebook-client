@@ -81,8 +81,6 @@ const HomeFeed = (props) => {
         return 1;
       });
 
-      console.log(posts);
-      console.log(sorted);
       setSortedPosts(sorted);
     }
   }, [posts]);
