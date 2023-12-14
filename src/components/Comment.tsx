@@ -93,8 +93,49 @@ const Comment = (props) => {
 
   const editComment = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    console.log("TBD edit button");
+
     //TODO edit api and check function
+    if (!props.postid || !props.commentid) {
+      console.log("Missing variables");
+      return;
+    }
+
+    try {
+      const res = await fetch(
+        `https://odin-facebook-api.onrender.com/api/posts/${props.postid}/comments/${props.commentid}`,
+        {
+          method: "PUT",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `bearer ${token}`,
+          },
+          body: JSON.stringify({
+            text: commentText,
+          }),
+        }
+      );
+
+      const resJson = await res.json();
+
+      if (resJson.errors) {
+        console.log(resJson.errors);
+      } else if (resJson.error) {
+        console.log(resJson.error);
+      } else {
+        if (resJson.success) {
+          // comment updated
+          console.log("comment updated");
+          setReadOnly(true);
+        } else {
+          console.log("unable to update comment");
+          setCommentText(props.text);
+          setReadOnly(true);
+        }
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const allowEditComment = (event: React.MouseEvent<HTMLButtonElement>) => {
