@@ -184,7 +184,7 @@ const Post = (props) => {
 
   const allowEditPost = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    console.log("TBD");
+    setReadOnly(false);
   };
 
   const cancelEditPost = (event: React.MouseEvent<HTMLButtonElement>) => {
