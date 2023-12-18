@@ -40,6 +40,8 @@ const Post = (props) => {
   const [photo, setPhoto] = useState<string>("");
   const [updatedAt, setUpdatedAt] = useState<string>("");
   const [readOnly, setReadOnly] = useState<boolean>(true);
+  const [editAuthorized, setEditAuthorized] = useState<boolean>(false);
+  const [deleteAuthorized, setDeleteAuthorized] = useState<boolean>(false);
   const [numLikes, setNumLikes] = useState<number>(0);
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [comments, setComments] = useState<comment[] | null>(null);
@@ -162,6 +164,13 @@ const Post = (props) => {
     }
   };
 
+  const handlePostTextChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    event.preventDefault();
+    console.log(event.target.value);
+  };
+
   const handleCommentTextChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
@@ -206,6 +215,28 @@ const Post = (props) => {
       console.log(err);
     }
   };
+
+  useEffect(() => {
+    // check if access to edit/delete post authorized
+
+    if (currentUser) {
+      if (!props.authorid) {
+        setEditAuthorized(false);
+        setDeleteAuthorized(false);
+      } else {
+        if (props.authorid === currentUser) {
+          setEditAuthorized(true);
+          setDeleteAuthorized(true);
+        } else {
+          setEditAuthorized(false);
+          setDeleteAuthorized(false);
+        }
+      }
+    } else {
+      setEditAuthorized(false);
+      setDeleteAuthorized(false);
+    }
+  }, [currentUser, props.authorid]);
 
   useEffect(() => {
     if (props.updatedAt) {
@@ -294,7 +325,7 @@ const Post = (props) => {
                   maxRows={10}
                   maxLength={1000}
                   readOnly={readOnly}
-                  //onChange={handleTextChange}
+                  onChange={handlePostTextChange}
                   value={props.text}
                   style={{
                     resize: "none",
