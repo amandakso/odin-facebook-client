@@ -6,6 +6,12 @@ import TextField from "@mui/material/TextField";
 import { useEffect, useState, useCallback } from "react";
 import jwtDecode, { JwtPayload } from "jwt-decode";
 
+import IconButton from "@mui/material/IconButton";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import CheckIcon from "@mui/icons-material/Check";
+import ClearIcon from "@mui/icons-material/Clear";
+import DeleteIcon from "@mui/icons-material/Delete";
+
 import ProfilePhoto from "./ProfilePhoto";
 import Comments from "./Comments";
 
@@ -169,6 +175,26 @@ const Post = (props) => {
   ) => {
     event.preventDefault();
     console.log(event.target.value);
+  };
+
+  const editPost = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    console.log("TBD");
+  };
+
+  const allowEditPost = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    console.log("TBD");
+  };
+
+  const cancelEditPost = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    console.log("TBD");
+  };
+
+  const deletePost = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    console.log("TBD");
   };
 
   const handleCommentTextChange = (
@@ -336,6 +362,27 @@ const Post = (props) => {
                   }}
                 />
               </Box>
+              {editAuthorized ? (
+                readOnly ? (
+                  <IconButton aria-label="edit" onClick={allowEditPost}>
+                    <ModeEditIcon />
+                  </IconButton>
+                ) : (
+                  <>
+                    <IconButton aria-label="update" onClick={editPost}>
+                      <CheckIcon />
+                    </IconButton>
+                    <IconButton aria-label="cancel" onClick={cancelEditPost}>
+                      <ClearIcon />
+                    </IconButton>
+                  </>
+                )
+              ) : null}
+              {deleteAuthorized ? (
+                <IconButton aria-label="delete" onClick={deletePost}>
+                  <DeleteIcon />
+                </IconButton>
+              ) : null}
             </Grid>
             <Grid item style={{ textAlign: "left" }}>
               <p>
