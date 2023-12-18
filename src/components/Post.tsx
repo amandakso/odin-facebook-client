@@ -48,6 +48,7 @@ const Post = (props) => {
   const [readOnly, setReadOnly] = useState<boolean>(true);
   const [editAuthorized, setEditAuthorized] = useState<boolean>(false);
   const [deleteAuthorized, setDeleteAuthorized] = useState<boolean>(false);
+  const [postText, setPostText] = useState<string>("");
   const [numLikes, setNumLikes] = useState<number>(0);
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [comments, setComments] = useState<comment[] | null>(null);
@@ -174,7 +175,7 @@ const Post = (props) => {
     event: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
     event.preventDefault();
-    console.log(event.target.value);
+    setPostText(event.target.value);
   };
 
   const editPost = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -241,6 +242,12 @@ const Post = (props) => {
       console.log(err);
     }
   };
+
+  useEffect(() => {
+    if (props.text) {
+      setPostText(props.text);
+    }
+  }, [props.text]);
 
   useEffect(() => {
     // check if access to edit/delete post authorized
@@ -352,7 +359,7 @@ const Post = (props) => {
                   maxLength={1000}
                   readOnly={readOnly}
                   onChange={handlePostTextChange}
-                  value={props.text}
+                  value={postText}
                   style={{
                     resize: "none",
                     width: "80%",
