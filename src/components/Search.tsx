@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Container from "@mui/material/Container";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
+import SearchResult from "./SearchResult";
 
 type searchResult = {
   _id: string;
@@ -19,6 +20,14 @@ type queryResultstype = {
     }
   ];
 };
+
+/**
+ *
+ * TODOS
+ * show results as profiles
+ * show/hide more search results
+ *
+ */
 
 const Search = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -75,8 +84,9 @@ const Search = () => {
     <>
       <Container maxWidth="sm">
         <h1>Search Results: {searchParams.get("search")}</h1>
+        <h2></h2>
         {searchResults.map((result) => {
-          return <p key={result._id}>{result.username}</p>;
+          return <SearchResult key={result._id} profile={result._id} />;
         })}
         <Snackbar
           open={snackbarOpen}

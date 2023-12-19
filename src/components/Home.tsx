@@ -1,7 +1,6 @@
 import jwtDecode, { JwtPayload } from "jwt-decode";
 import { useEffect, useState } from "react";
 import HomeFeed from "./HomeFeed";
-import { ContactSupportRounded } from "@mui/icons-material";
 
 declare module "jwt-decode" {
   export interface JwtPayload {
