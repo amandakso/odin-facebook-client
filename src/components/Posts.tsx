@@ -15,6 +15,7 @@ type post = {
 const Posts = (props): JSX.Element => {
   const [posts, setPosts] = useState<post[] | null>(null);
   const [numOfPostsShown, setNumOfPostsShown] = useState(5);
+  const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(false);
 
   const shownPosts = useMemo(() => {
     return posts
@@ -39,6 +40,7 @@ const Posts = (props): JSX.Element => {
         setNumOfPostsShown(numOfPostsShown + 5);
       } else {
         setNumOfPostsShown(posts.length);
+        setIsButtonDisabled(true);
       }
     }
   };
@@ -51,7 +53,12 @@ const Posts = (props): JSX.Element => {
       {posts ? (
         <div>
           <div>{shownPosts}</div>
-          <Button type="button" variant="text" onClick={showMore}>
+          <Button
+            type="button"
+            variant="text"
+            disabled={isButtonDisabled}
+            onClick={showMore}
+          >
             Show More
           </Button>
         </div>
