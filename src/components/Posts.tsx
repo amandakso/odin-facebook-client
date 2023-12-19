@@ -1,7 +1,7 @@
 import Post from "./Post";
 import { useEffect, useMemo, useState } from "react";
 
-//import Button from "@mui/material/Button";
+import Button from "@mui/material/Button";
 
 type post = {
   author: { _id: string; username: string };
@@ -32,7 +32,8 @@ const Posts = (props): JSX.Element => {
       ));
   }, [posts, numOfPostsShown]);
 
-  const showMore = () => {
+  const showMore = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
     if (posts) {
       if (numOfPostsShown + 5 <= posts.length) {
         setNumOfPostsShown(numOfPostsShown + 5);
@@ -45,7 +46,20 @@ const Posts = (props): JSX.Element => {
     setPosts(props.posts);
   }, [props.posts]);
 
-  return <>{posts ? shownPosts : <p>Loading...</p>}</>;
+  return (
+    <>
+      {posts ? (
+        <div>
+          <div>{shownPosts}</div>
+          <Button type="button" variant="text" onClick={showMore}>
+            Show More
+          </Button>
+        </div>
+      ) : (
+        <p>Loading...</p>
+      )}
+    </>
+  );
 };
 
 export default Posts;
