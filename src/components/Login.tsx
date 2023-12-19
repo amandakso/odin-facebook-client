@@ -29,6 +29,11 @@ function Copyright() {
   );
 }
 
+function loginGuest(event: React.MouseEvent<HTMLButtonElement>) {
+  event.preventDefault();
+  console.log("guest login TBD");
+}
+
 export default function Login() {
   type alertType = string | null;
 
@@ -162,6 +167,13 @@ export default function Login() {
           <Link href="/signup" variant="body2">
             {"Don't have an account? Sign Up"}
           </Link>
+          <Button
+            variant="outlined"
+            sx={{ margin: "10px" }}
+            onClick={loginGuest}
+          >
+            Try Guest Account
+          </Button>
         </Box>
       </Box>
       <Copyright sx={{ mt: 8, mb: 4 }} />
