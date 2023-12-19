@@ -53,6 +53,7 @@ const Post = (props) => {
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [comments, setComments] = useState<comment[] | null>(null);
   const [commentText, setCommentText] = useState<string>("");
+  const [hideComments, setHideComments] = useState<boolean>(true);
 
   const fetchProfile = async (authorid: string) => {
     try {
@@ -312,6 +313,17 @@ const Post = (props) => {
     }
   };
 
+  const changeHideCommentsStatus = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+    if (hideComments) {
+      setHideComments(false);
+    } else {
+      setHideComments(true);
+    }
+  };
+
   useEffect(() => {
     if (props.text) {
       setPostText(props.text);
@@ -483,9 +495,28 @@ const Post = (props) => {
               )}
             </Grid>
           </Grid>
-          {props.postid ? (
+          {comments && comments.length > 0 ? (
             <Grid item xs={12}>
-              <Comments comments={comments} postAuthorId={props.authorid} />
+              {hideComments ? (
+                <Button
+                  type="button"
+                  variant="text"
+                  onClick={changeHideCommentsStatus}
+                >
+                  Show Comments
+                </Button>
+              ) : (
+                <div>
+                  <Button
+                    type="button"
+                    variant="text"
+                    onClick={changeHideCommentsStatus}
+                  >
+                    Hide Comments
+                  </Button>
+                  <Comments comments={comments} postAuthorId={props.authorid} />
+                </div>
+              )}
             </Grid>
           ) : null}
         </Grid>
