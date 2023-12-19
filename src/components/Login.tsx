@@ -29,11 +29,6 @@ function Copyright() {
   );
 }
 
-function loginGuest(event: React.MouseEvent<HTMLButtonElement>) {
-  event.preventDefault();
-  console.log("guest login TBD");
-}
-
 export default function Login() {
   type alertType = string | null;
 
@@ -41,6 +36,42 @@ export default function Login() {
   const [open, setOpen] = useState<boolean>(false);
 
   const navigate = useNavigate();
+
+  async function loginGuest(event: React.MouseEvent<HTMLButtonElement>) {
+    event.preventDefault();
+    try {
+      const res = await fetch(
+        "https://odin-facebook-api.onrender.com/api/auth/login",
+        {
+          method: "POST",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: import.meta.env.VITE_GUEST_USERNAME,
+            password: import.meta.env.VITE_GUEST_PWD,
+          }),
+        }
+      );
+      const resJson = await res.json();
+
+      if (res.status === 200) {
+        if (resJson.error) {
+          console.log(resJson.error);
+        } else if (resJson.message) {
+          console.log(resJson.message);
+        } else if (resJson.token) {
+          sessionStorage.setItem("token", resJson.token);
+          navigate("/");
+        } else {
+          console.log("Unable to login as guest");
+        }
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
