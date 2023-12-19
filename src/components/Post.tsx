@@ -178,9 +178,48 @@ const Post = (props) => {
     setPostText(event.target.value);
   };
 
-  const editPost = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const editPost = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    console.log("TBD");
+    if (!props.postid) {
+      console.log("Missing variable");
+      return;
+    }
+
+    try {
+      const res = await fetch(
+        `https://odin-facebook-api.onrender.com/api/posts/${props.postid}`,
+        {
+          method: "PUT",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `bearer ${token}`,
+          },
+          body: JSON.stringify({
+            text: postText,
+          }),
+        }
+      );
+
+      const resJson = await res.json();
+
+      if (resJson.errors) {
+        console.log(resJson.errors);
+      } else if (resJson.error) {
+        console.log(resJson.error);
+      } else {
+        if (resJson.success) {
+          console.log("post updated");
+          setReadOnly(true);
+        } else {
+          console.log("unable to update post");
+          setPostText(props.text);
+          setReadOnly(true);
+        }
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const allowEditPost = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -196,7 +235,7 @@ const Post = (props) => {
   const deletePost = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     if (!props.postid) {
-      console.log("Missing variables");
+      console.log("Missing variable");
       return;
     }
 
