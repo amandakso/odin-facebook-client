@@ -193,9 +193,39 @@ const Post = (props) => {
     setReadOnly(true);
   };
 
-  const deletePost = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const deletePost = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    console.log("TBD");
+    if (!props.postid) {
+      console.log("Missing variables");
+      return;
+    }
+
+    try {
+      const res = await fetch(
+        //"/:postid/comments/:commentid"
+        `https://odin-facebook-api.onrender.com/api/posts/${props.postid}`,
+        {
+          method: "DELETE",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `bearer ${token}`,
+          },
+        }
+      );
+
+      const resJson = await res.json();
+
+      if (resJson.error) {
+        console.log(resJson.error);
+      } else {
+        if (resJson.success) {
+          window.location.reload();
+        }
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleCommentTextChange = (
