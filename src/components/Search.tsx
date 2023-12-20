@@ -86,7 +86,13 @@ const Search = () => {
         <h1>Search Results: {searchParams.get("search")}</h1>
         <h2></h2>
         {searchResults.map((result) => {
-          return <SearchResult key={result._id} profile={result._id} />;
+          return (
+            <SearchResult
+              key={result._id}
+              profileId={result._id}
+              username={result.username}
+            />
+          );
         })}
         <Snackbar
           open={snackbarOpen}
