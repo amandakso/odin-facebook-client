@@ -4,9 +4,9 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
 import Badge from "@mui/material/Badge";
+import HomeIcon from "@mui/icons-material/Home";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -89,6 +89,11 @@ export default function Navbar() {
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const navigate = useNavigate();
+
+  const handleHomeClick = (event: React.MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+    console.log("click");
+  };
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -255,14 +260,16 @@ export default function Navbar() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ display: { xs: "none", sm: "block" } }}
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="home"
+            sx={{ mr: 2 }}
+            onClick={handleHomeClick}
           >
-            MUI
-          </Typography>
+            <HomeIcon />
+          </IconButton>
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
