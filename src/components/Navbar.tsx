@@ -92,7 +92,7 @@ export default function Navbar() {
 
   const handleHomeClick = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
-    console.log("click");
+    navigate(`/`);
   };
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
