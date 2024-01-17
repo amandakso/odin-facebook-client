@@ -81,7 +81,6 @@ const Profile = () => {
 
           if (id === currentUser) {
             setProfileStatus("self");
-            console.log("self");
           } else {
             // check friendship status of other use
             try {
@@ -123,6 +122,12 @@ const Profile = () => {
     };
     getProfileId();
   }, [currentUser, username]);
+
+  useEffect(() => {
+    if (profileStatus === "none") {
+      navigate("/ProfileNotFound");
+    }
+  }, [profileStatus, navigate]);
 
   // Get current profile info: photo, bio, username; check status
   useEffect(() => {
@@ -190,12 +195,6 @@ const Profile = () => {
       }
     }
   }, [profileStatus, profileId]);
-
-  useEffect(() => {
-    if (profileStatus === "none") {
-      navigate("/ProfileNotFound");
-    }
-  }, [profileStatus, navigate]);
 
   return (
     <>
