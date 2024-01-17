@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 import Grid from "@mui/material/Grid";
@@ -42,7 +42,7 @@ const Profile = () => {
   const decoded = jwtDecode<JwtPayload>(token);
   const currentUser: string | undefined = decoded.user._id;
   const [profileStatus, setProfileStatus] = useState<
-    "self" | "friend" | "requested" | "pending" | "other" | null
+    "self" | "friend" | "requested" | "pending" | "other" | "none" | null
   >(null);
   const [profileId, setProfileId] = useState<string | null>(null);
   const [profileBio, setProfileBio] = useState<string | null>(null);
@@ -51,6 +51,8 @@ const Profile = () => {
     null
   );
   const [posts, setPosts] = useState<Array<post> | null>(null);
+
+  const navigate = useNavigate();
 
   // Check if profile status
   useEffect(() => {
@@ -67,45 +69,53 @@ const Profile = () => {
           }
         );
         const resJson = await res.json();
-        const id = await resJson._id;
 
-        if (id) {
-          setProfileId(id);
+        let idFound = false;
+        if (resJson?._id) {
+          idFound = true;
         }
 
-        if (id === currentUser) {
-          setProfileStatus("self");
-          console.log("self");
-        } else {
-          // check friendship status of other use
-          try {
-            const res = await fetch(
-              `https://odin-facebook-api.onrender.com/api/users/check-friendship/${currentUser}/${id}`,
-              {
-                method: "GET",
-                mode: "cors",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-              }
-            );
-            const resJson = await res.json();
-            const status = await resJson.status;
+        if (idFound) {
+          const id = await resJson._id;
+          setProfileId(id);
 
-            //status: 0 (add friend); 1 (requested); 2 (pending); 3 (friends)
-            if (status === 1) {
-              setProfileStatus("requested");
-            } else if (status === 2) {
-              setProfileStatus("pending");
-            } else if (status === 3) {
-              setProfileStatus("friend");
-            } else {
-              setProfileStatus("other");
+          if (id === currentUser) {
+            setProfileStatus("self");
+            console.log("self");
+          } else {
+            // check friendship status of other use
+            try {
+              const res = await fetch(
+                `https://odin-facebook-api.onrender.com/api/users/check-friendship/${currentUser}/${id}`,
+                {
+                  method: "GET",
+                  mode: "cors",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                }
+              );
+              const resJson = await res.json();
+              const status = await resJson.status;
+
+              //status: 0 (add friend); 1 (requested); 2 (pending); 3 (friends):
+              if (!status) {
+                setProfileStatus("none");
+              } else if (status === 1) {
+                setProfileStatus("requested");
+              } else if (status === 2) {
+                setProfileStatus("pending");
+              } else if (status === 3) {
+                setProfileStatus("friend");
+              } else {
+                setProfileStatus("other");
+              }
+            } catch (err) {
+              console.log(err);
             }
-          } catch (err) {
-            console.log(err);
           }
-          // TODO write api for checking friendship status
+        } else {
+          setProfileStatus("none");
         }
       } catch (err) {
         console.log(err);
@@ -180,6 +190,12 @@ const Profile = () => {
       }
     }
   }, [profileStatus, profileId]);
+
+  useEffect(() => {
+    if (profileStatus === "none") {
+      navigate("/ProfileNotFound");
+    }
+  }, [profileStatus, navigate]);
 
   return (
     <>
