@@ -6,6 +6,7 @@ import Box from "@mui/material/Box";
 
 import jwtDecode, { JwtPayload } from "jwt-decode";
 import ProfilePhoto from "./ProfilePhoto";
+import ProfileFriendSquares from "./ProfileFriendSquares";
 
 declare module "jwt-decode" {
   export interface JwtPayload {
@@ -15,6 +16,16 @@ declare module "jwt-decode" {
     };
   }
 }
+
+type friend = {
+  createdAt: string; // date
+  recipient: string; // userid
+  requester: string; //userid
+  status: number; // 0-3
+  updatedAt: string; // date
+  __v: number;
+  _id: string; // friendship id
+};
 
 const ProfileSidebar = (props): JSX.Element => {
   type profileStatusType =
@@ -28,6 +39,7 @@ const ProfileSidebar = (props): JSX.Element => {
   const token: string = sessionStorage.getItem("token") as string;
   const decoded = jwtDecode<JwtPayload>(token);
   const profileStatus: profileStatusType = props.status;
+  const profileFriends: Array<friend> | null = props.friends;
   const [friendButtonText, setFriendButtonText] = useState<string | null>(null);
   const [friendButtonVisible, setFriendButtonVisible] =
     useState<boolean>(false);
@@ -199,6 +211,14 @@ const ProfileSidebar = (props): JSX.Element => {
       <ProfilePhoto username={props.username} photo={props.photo} size={200} />
       <div>{props.username}</div>
       <div>FRIENDS LIST PLACEHOLDER</div>
+
+      {profileFriends ? (
+        profileFriends.length > 0 ? (
+          <ProfileFriendSquares friends={profileFriends} />
+        ) : (
+          <ProfileFriendSquares friends={[]} />
+        )
+      ) : null}
       {friendButtonVisible ? (
         <Button
           variant="contained"
