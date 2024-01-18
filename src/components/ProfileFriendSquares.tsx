@@ -32,7 +32,7 @@ const ProfileFriendSquares = (props) => {
         return (
           <ProfileFriendSquare
             key={friend.recipient}
-            friend={friend.recipient}
+            profileId={friend.recipient}
           />
         );
       })}
