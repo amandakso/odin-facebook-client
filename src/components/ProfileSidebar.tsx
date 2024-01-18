@@ -39,7 +39,7 @@ const ProfileSidebar = (props): JSX.Element => {
   const token: string = sessionStorage.getItem("token") as string;
   const decoded = jwtDecode<JwtPayload>(token);
   const profileStatus: profileStatusType = props.status;
-  const profileFriends: Array<friend> | null = props.friends;
+  const profileFriends: Array<friend> | undefined = props.friends;
   const [friendButtonText, setFriendButtonText] = useState<string | null>(null);
   const [friendButtonVisible, setFriendButtonVisible] =
     useState<boolean>(false);
@@ -218,7 +218,9 @@ const ProfileSidebar = (props): JSX.Element => {
         ) : (
           <ProfileFriendSquares friends={[]} />
         )
-      ) : null}
+      ) : (
+        <ProfileFriendSquares friends={[]} />
+      )}
       {friendButtonVisible ? (
         <Button
           variant="contained"
