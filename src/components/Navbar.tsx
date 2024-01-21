@@ -209,10 +209,8 @@ export default function Navbar() {
       onClose={handleMobileMenuClose}
     >
       <MenuItem>
-        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="error">
-            <PeopleIcon />
-          </Badge>
+        <IconButton size="large" aria-label="friends" color="inherit">
+          <PeopleIcon />
         </IconButton>
         <p>Friends</p>
       </MenuItem>
@@ -294,14 +292,8 @@ export default function Navbar() {
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <IconButton
-              size="large"
-              aria-label="show 4 new mails"
-              color="inherit"
-            >
-              <Badge badgeContent={4} color="error">
-                <PeopleIcon />
-              </Badge>
+            <IconButton size="large" aria-label="friends" color="inherit">
+              <PeopleIcon />
             </IconButton>
             <IconButton
               size="large"
