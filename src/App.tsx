@@ -10,6 +10,7 @@ import NotFound from "./components/NotFound";
 import Search from "./components/Search";
 import Navbar from "./components/Navbar";
 import Settings from "./components/Settings";
+import Friends from "./components/Friends";
 
 function App() {
   return (
@@ -28,6 +29,10 @@ function App() {
             <Route
               path="/profile/:username"
               element={<PrivateRoute child={<Profile />} />}
+            ></Route>
+            <Route
+              path="/friends"
+              element={<PrivateRoute child={<Friends />} />}
             ></Route>
             <Route
               path="/search"
