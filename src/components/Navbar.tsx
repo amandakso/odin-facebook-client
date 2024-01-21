@@ -160,13 +160,16 @@ export default function Navbar() {
   };
 
   const handleSearchClick = () => {
-    console.log(searchValue);
     navigate(`/search/?search=${searchValue}`);
   };
 
   const handleSettingsClick = () => {
     handleMenuClose();
     navigate(`/settings`);
+  };
+
+  const handleFriendsClick = () => {
+    navigate("/friends");
   };
 
   const menuId = "primary-search-account-menu";
@@ -208,7 +211,7 @@ export default function Navbar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
+      <MenuItem onClick={handleFriendsClick}>
         <IconButton size="large" aria-label="friends" color="inherit">
           <PeopleIcon />
         </IconButton>
@@ -292,7 +295,12 @@ export default function Navbar() {
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <IconButton size="large" aria-label="friends" color="inherit">
+            <IconButton
+              onClick={handleFriendsClick}
+              size="large"
+              aria-label="friends"
+              color="inherit"
+            >
               <PeopleIcon />
             </IconButton>
             <IconButton
