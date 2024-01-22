@@ -5,6 +5,7 @@ import ProfilePhoto from "./ProfilePhoto";
 
 const SearchResult = (props) => {
   const [photo, setPhoto] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
 
   useEffect(() => {
     const fetchProfile = async (profileId: string) => {
@@ -25,6 +26,7 @@ const SearchResult = (props) => {
         } else {
           //   setProfileBio(resJson.bio);
           setPhoto(resJson.photo);
+          setUsername(resJson.username);
           //   setProfileFriends(resJson.friends);
         }
       } catch (err) {
@@ -37,10 +39,10 @@ const SearchResult = (props) => {
   }, [props.profileId]);
   return (
     <>
-      <Link to={`/profile/${props.username}`}>
+      <Link to={`/profile/${username}`}>
         <div>
-          <ProfilePhoto username={props.username} photo={photo} size={100} />
-          <h1>{props.username}</h1>
+          <ProfilePhoto username={username} photo={photo} size={100} />
+          <h1>{username}</h1>
         </div>
       </Link>
     </>
