@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import jwtDecode, { JwtPayload } from "jwt-decode";
 
+import SearchResult from "./SearchResult";
+
 declare module "jwt-decode" {
   export interface JwtPayload {
     user: {
@@ -44,7 +46,6 @@ const Friends = () => {
           console.log(resJson.error);
         } else {
           setProfileFriends(resJson.friends);
-          console.log(resJson.friends);
         }
       } catch (err) {
         console.log(err);
@@ -57,6 +58,16 @@ const Friends = () => {
   return (
     <>
       <h1>Friends Page</h1>
+      {profileFriends.length > 0
+        ? profileFriends.map((result) => {
+            return (
+              <SearchResult
+                key={result.recipient}
+                profileId={result.recipient}
+              />
+            );
+          })
+        : null}
     </>
   );
 };
