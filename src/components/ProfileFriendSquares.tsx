@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import ProfileFriendSquare from "./ProfileFriendSquare";
+import Button from "@mui/material/Button";
+
 type friend = {
   createdAt: string; // date
   recipient: string; // userid
@@ -14,8 +17,13 @@ const ProfileFriendSquares = (props) => {
   const friends: Array<friend> | undefined = props.friends;
   const [profilesToDisplay, setProfilesToDisplay] = useState<Array<friend>>([]);
 
+  const navigate = useNavigate();
+
+  const handleFriendsClick = () => {
+    navigate("/friends");
+  };
+
   useEffect(() => {
-    console.log("test");
     if (friends) {
       if (friends.length > 9) {
         setProfilesToDisplay(friends.slice(0, 9));
@@ -36,6 +44,9 @@ const ProfileFriendSquares = (props) => {
           />
         );
       })}
+      <Button variant="text" onClick={handleFriendsClick}>
+        See All
+      </Button>
     </>
   );
 };
