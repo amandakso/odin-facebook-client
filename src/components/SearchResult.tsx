@@ -1,6 +1,13 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import Card from "@mui/material/Card";
+import CardActionArea from "@mui/material/CardActionArea";
+import CardContent from "@mui/material/CardContent";
+
 import ProfilePhoto from "./ProfilePhoto";
 
 const SearchResult = (props) => {
@@ -39,12 +46,31 @@ const SearchResult = (props) => {
   }, [props.profileId]);
   return (
     <>
-      <Link to={`/profile/${username}`}>
-        <div>
-          <ProfilePhoto username={username} photo={photo} size={100} />
-          <h1>{username}</h1>
-        </div>
-      </Link>
+      <Grid item xs={12} md={6}>
+        <CardActionArea component="a" href={`/profile/${username}`}>
+          <Card
+            sx={{
+              display: "flex",
+            }}
+          >
+            <CardContent
+              sx={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+            >
+              <Box
+                display={"flex"}
+                flexDirection={"column"}
+                alignItems={"center"}
+                justifyContent={"center"}
+              >
+                <ProfilePhoto username={username} photo={photo} size={100} />
+                <Typography variant="subtitle1" paragraph>
+                  {username}
+                </Typography>
+              </Box>
+            </CardContent>
+          </Card>
+        </CardActionArea>
+      </Grid>
     </>
   );
 };
