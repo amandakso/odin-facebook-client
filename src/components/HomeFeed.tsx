@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import Posts from "./Posts";
 
+import Grid from "@mui/material/Grid";
+
 type post = {
   author: { _id: string; username: string };
   createdAt: string; // date
@@ -87,7 +89,10 @@ const HomeFeed = (props) => {
 
   return (
     <>
-      <Posts posts={sortedPosts} />
+      <h1>Odinbook Home Page</h1>
+      <Grid display={"flex"} flexDirection={"column"} alignItems={"center"}>
+        <Posts posts={sortedPosts} />
+      </Grid>
     </>
   );
 };
