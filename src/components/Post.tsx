@@ -420,20 +420,20 @@ const Post = (props) => {
 
   return (
     <>
-      <Box style={{ width: "80%" }}>
+      <Box style={{ width: "80%", padding: "5vh" }}>
         <Grid container spacing={2}>
           <Grid container item xs={12} spacing={1}>
             <Grid item xs="auto">
               <ProfilePhoto username={props.username} photo={photo} size={75} />
             </Grid>
             <Grid item xs={8}>
-              <p style={{ textAlign: "left" }}>{props.username}</p>
-              <p style={{ textAlign: "left" }}>{updatedAt}</p>
+              <p style={{ textAlign: "left", margin: 0 }}>{props.username}</p>
+              <p style={{ textAlign: "left", margin: 0 }}>{updatedAt}</p>
             </Grid>
           </Grid>
           <Grid item xs={12}>
             <Grid item>
-              <Box component="form" noValidate>
+              <Box component="form" noValidate alignItems={"flex-start"}>
                 <Textarea
                   aria-label="post textarea"
                   maxRows={10}
@@ -443,7 +443,7 @@ const Post = (props) => {
                   value={postText}
                   style={{
                     resize: "none",
-                    width: "80%",
+                    width: "100%",
                     border: "none",
                     outline: "none",
                     textAlign: "left",
