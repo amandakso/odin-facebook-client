@@ -215,7 +215,7 @@ const Profile = () => {
         <Grid item xs={8}>
           <Grid item>
             <h2>RIGHT</h2>
-            <NewPost />
+            {profileStatus == "self" ? <NewPost /> : null}
             {posts ? <Posts posts={posts} /> : null}
           </Grid>
         </Grid>
