@@ -89,7 +89,6 @@ const HomeFeed = (props) => {
 
   return (
     <>
-      <h1>Odinbook Home Page</h1>
       <Grid display={"flex"} flexDirection={"column"} alignItems={"center"}>
         <Posts posts={sortedPosts} />
       </Grid>

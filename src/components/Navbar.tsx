@@ -327,6 +327,7 @@ export default function Navbar() {
           </Box>
         </Toolbar>
       </AppBar>
+      <Toolbar />
       {renderMobileMenu}
       {renderMenu}
     </Box>
