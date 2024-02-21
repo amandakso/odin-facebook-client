@@ -420,13 +420,13 @@ const Post = (props) => {
 
   return (
     <>
-      <Box style={{ width: "80%", padding: "5vh" }}>
-        <Grid container spacing={2}>
-          <Grid container item xs={12} spacing={1}>
+      <Box style={{ width: "100%", paddingTop: "7vh" }}>
+        <Grid container spacing={0}>
+          <Grid container item xs={12} spacing={0}>
             <Grid item xs="auto">
               <ProfilePhoto username={props.username} photo={photo} size={75} />
             </Grid>
-            <Grid item xs={8}>
+            <Grid item xs={6}>
               <p style={{ textAlign: "left", margin: 0 }}>{props.username}</p>
               <p style={{ textAlign: "left", margin: 0 }}>{updatedAt}</p>
             </Grid>
@@ -450,27 +450,6 @@ const Post = (props) => {
                   }}
                 />
               </Box>
-              {editAuthorized ? (
-                readOnly ? (
-                  <IconButton aria-label="edit" onClick={allowEditPost}>
-                    <ModeEditIcon />
-                  </IconButton>
-                ) : (
-                  <>
-                    <IconButton aria-label="update" onClick={editPost}>
-                      <CheckIcon />
-                    </IconButton>
-                    <IconButton aria-label="cancel" onClick={cancelEditPost}>
-                      <ClearIcon />
-                    </IconButton>
-                  </>
-                )
-              ) : null}
-              {deleteAuthorized ? (
-                <IconButton aria-label="delete" onClick={deletePost}>
-                  <DeleteIcon />
-                </IconButton>
-              ) : null}
             </Grid>
             <Grid item style={{ textAlign: "left" }}>
               <p>
@@ -493,6 +472,27 @@ const Post = (props) => {
                   Like
                 </Button>
               )}
+              {editAuthorized ? (
+                readOnly ? (
+                  <IconButton aria-label="edit" onClick={allowEditPost}>
+                    <ModeEditIcon />
+                  </IconButton>
+                ) : (
+                  <>
+                    <IconButton aria-label="update" onClick={editPost}>
+                      <CheckIcon />
+                    </IconButton>
+                    <IconButton aria-label="cancel" onClick={cancelEditPost}>
+                      <ClearIcon />
+                    </IconButton>
+                  </>
+                )
+              ) : null}
+              {deleteAuthorized ? (
+                <IconButton aria-label="delete" onClick={deletePost}>
+                  <DeleteIcon />
+                </IconButton>
+              ) : null}
             </Grid>
           </Grid>
           {comments && comments.length > 0 ? (
