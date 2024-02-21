@@ -421,82 +421,101 @@ const Post = (props) => {
   return (
     <>
       <Box style={{ width: "100%", paddingTop: "7vh" }}>
-        <Grid container spacing={0}>
-          <Grid container item xs={12} spacing={0}>
-            <Grid item xs="auto">
+        <Grid container direction={"column"} style={{ padding: "10px" }}>
+          <Grid container item style={{ padding: "5px" }}>
+            <Grid item>
               <ProfilePhoto username={props.username} photo={photo} size={75} />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item style={{ paddingLeft: "12px" }}>
               <p style={{ textAlign: "left", margin: 0 }}>{props.username}</p>
               <p style={{ textAlign: "left", margin: 0 }}>{updatedAt}</p>
             </Grid>
           </Grid>
-          <Grid item xs={12}>
-            <Grid item>
-              <Box component="form" noValidate alignItems={"flex-start"}>
-                <Textarea
-                  aria-label="post textarea"
-                  maxRows={10}
-                  maxLength={1000}
-                  readOnly={readOnly}
-                  onChange={handlePostTextChange}
-                  value={postText}
-                  style={{
-                    resize: "none",
-                    width: "100%",
-                    border: "none",
-                    outline: "none",
-                    textAlign: "left",
-                  }}
-                />
-              </Box>
-            </Grid>
-            <Grid item style={{ textAlign: "left" }}>
-              <p>
-                {numLikes} {numLikes === 1 ? "like" : "likes"}
-              </p>
-              {isLiked ? (
-                <Button
-                  type="button"
-                  variant="contained"
-                  onClick={handleDislikeClick}
-                >
-                  Unlike
-                </Button>
-              ) : (
-                <Button
-                  type="button"
-                  variant="contained"
-                  onClick={handleLikeClick}
-                >
-                  Like
-                </Button>
-              )}
-              {editAuthorized ? (
-                readOnly ? (
-                  <IconButton aria-label="edit" onClick={allowEditPost}>
-                    <ModeEditIcon />
-                  </IconButton>
-                ) : (
-                  <>
-                    <IconButton aria-label="update" onClick={editPost}>
-                      <CheckIcon />
-                    </IconButton>
-                    <IconButton aria-label="cancel" onClick={cancelEditPost}>
-                      <ClearIcon />
-                    </IconButton>
-                  </>
-                )
-              ) : null}
-              {deleteAuthorized ? (
-                <IconButton aria-label="delete" onClick={deletePost}>
-                  <DeleteIcon />
+          <Grid item style={{ padding: "5px" }}>
+            <Box component="form" noValidate alignItems={"flex-start"}>
+              <Textarea
+                aria-label="post textarea"
+                maxRows={10}
+                maxLength={1000}
+                readOnly={readOnly}
+                onChange={handlePostTextChange}
+                value={postText}
+                style={{
+                  resize: "none",
+                  width: "100%",
+                  border: "none",
+                  outline: "none",
+                  textAlign: "left",
+                }}
+              />
+            </Box>
+          </Grid>
+          <Grid item style={{ textAlign: "left", padding: "5px" }}>
+            <p>
+              {numLikes} {numLikes === 1 ? "like" : "likes"}
+            </p>
+          </Grid>
+          <Grid container item justifyContent={"flex-start"}>
+            {isLiked ? (
+              <Button
+                type="button"
+                variant="contained"
+                onClick={handleDislikeClick}
+              >
+                Unlike
+              </Button>
+            ) : (
+              <Button
+                type="button"
+                variant="contained"
+                onClick={handleLikeClick}
+              >
+                Like
+              </Button>
+            )}
+            {editAuthorized ? (
+              readOnly ? (
+                <IconButton aria-label="edit" onClick={allowEditPost}>
+                  <ModeEditIcon />
                 </IconButton>
-              ) : null}
-            </Grid>
+              ) : (
+                <>
+                  <IconButton aria-label="update" onClick={editPost}>
+                    <CheckIcon />
+                  </IconButton>
+                  <IconButton aria-label="cancel" onClick={cancelEditPost}>
+                    <ClearIcon />
+                  </IconButton>
+                </>
+              )
+            ) : null}
+            {deleteAuthorized ? (
+              <IconButton aria-label="delete" onClick={deletePost}>
+                <DeleteIcon />
+              </IconButton>
+            ) : null}
+          </Grid>
+          <Grid item style={{ paddingTop: "5px" }}>
+            <Box component="form" noValidate onSubmit={submitComment}>
+              <Grid container>
+                <TextField
+                  id="commentField"
+                  label="comment"
+                  variant="outlined"
+                  placeholder="Write a comment."
+                  multiline
+                  inputProps={{ maxLength: 500 }}
+                  value={commentText}
+                  onChange={handleCommentTextChange}
+                />
+                <Button type="submit" variant="contained">
+                  Comment
+                </Button>
+              </Grid>
+            </Box>
           </Grid>
           {comments && comments.length > 0 ? (
-            <Grid item xs={12}>
+            <Grid item>
               {hideComments ? (
                 <Button
                   type="button"
@@ -506,7 +525,8 @@ const Post = (props) => {
                   Show Comments
                 </Button>
               ) : (
-                <div>
+                <Box>
+                  <Comments comments={comments} postAuthorId={props.authorid} />
                   <Button
                     type="button"
                     variant="text"
@@ -514,30 +534,10 @@ const Post = (props) => {
                   >
                     Hide Comments
                   </Button>
-                  <Comments comments={comments} postAuthorId={props.authorid} />
-                </div>
+                </Box>
               )}
             </Grid>
           ) : null}
-        </Grid>
-        <Grid item xs={12} style={{ textAlign: "left", alignItems: "center" }}>
-          <Box component="form" noValidate onSubmit={submitComment}>
-            <Grid container>
-              <TextField
-                id="commentField"
-                label="comment"
-                variant="outlined"
-                placeholder="Write a comment."
-                multiline
-                inputProps={{ maxLength: 500 }}
-                value={commentText}
-                onChange={handleCommentTextChange}
-              />
-              <Button type="submit" variant="contained">
-                Comment
-              </Button>
-            </Grid>
-          </Box>
         </Grid>
       </Box>
     </>
