@@ -195,13 +195,12 @@ const Profile = () => {
       }
     }
   }, [profileStatus, profileId]);
-
-  return (
-    <>
-      <Grid container spacing={2}>
+  /**
+   * 
+   *     
+   *   <Grid container spacing={2}>
         <Grid item xs={4}>
           <Grid item>
-            <h2>LEFT</h2>
             <ProfileSidebar
               profileId={profileId}
               username={username}
@@ -213,11 +212,38 @@ const Profile = () => {
           </Grid>
         </Grid>
         <Grid item xs={8}>
-          <Grid item>
-            <h2>RIGHT</h2>
-            {profileStatus == "self" ? <NewPost /> : null}
+          <Grid item>{profileStatus == "self" ? <NewPost /> : null}</Grid>
+          <Grid item alignSelf={"center"}>
             {posts ? <Posts posts={posts} /> : null}
           </Grid>
+        </Grid>
+      </Grid>
+   */
+
+  return (
+    <>
+      <Grid container>
+        <Grid item xs={4}>
+          <ProfileSidebar
+            profileId={profileId}
+            username={username}
+            bio={profileBio}
+            photo={profilePhoto}
+            friends={profileFriends}
+            status={profileStatus}
+          />
+        </Grid>
+        <Grid
+          container
+          item
+          xs={8}
+          flexDirection={"column"}
+          alignItems={"center"}
+        >
+          <Grid item style={{ width: "100%" }}>
+            {profileStatus == "self" ? <NewPost /> : null}
+          </Grid>
+          <Grid item>{posts ? <Posts posts={posts} /> : null}</Grid>
         </Grid>
       </Grid>
     </>
