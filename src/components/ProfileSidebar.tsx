@@ -210,7 +210,6 @@ const ProfileSidebar = (props): JSX.Element => {
     <>
       <ProfilePhoto username={props.username} photo={props.photo} size={200} />
       <div>{props.username}</div>
-      <div>FRIENDS LIST PLACEHOLDER</div>
 
       {profileFriends ? (
         profileFriends.length > 0 ? (
