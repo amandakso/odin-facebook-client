@@ -46,7 +46,7 @@ const SearchResult = (props) => {
   }, [props.profileId]);
   return (
     <>
-      <Grid item xs={12} md={6}>
+      <Grid item>
         <CardActionArea component="a" href={`/profile/${username}`}>
           <Card
             sx={{

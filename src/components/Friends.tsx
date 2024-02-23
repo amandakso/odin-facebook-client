@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import jwtDecode, { JwtPayload } from "jwt-decode";
 
 import Divider from "@mui/material/Divider";
+import Grid from "@mui/material/Grid";
 
 import SearchResult from "./SearchResult";
 
@@ -60,9 +61,6 @@ const Friends = () => {
               return;
             }
           });
-          console.log(allFriends);
-          console.log(pendingFriends);
-          console.log(confirmedFriends);
           setConfirmedFriends(confirmedFriends);
           setPendingFriends(pendingFriends);
         }
@@ -77,29 +75,33 @@ const Friends = () => {
 
   return (
     <>
-      <h1>Friend Requests</h1>
-      {pendingFriends.length > 0
-        ? pendingFriends.map((result) => {
-            return (
-              <SearchResult
-                key={result.recipient}
-                profileId={result.recipient}
-              />
-            );
-          })
-        : null}
-      <Divider />
-      <h1>Friends Page</h1>
-      {confirmedFriends.length > 0
-        ? confirmedFriends.map((result) => {
-            return (
-              <SearchResult
-                key={result.recipient}
-                profileId={result.recipient}
-              />
-            );
-          })
-        : null}
+      <Grid container direction={"column"} alignItems={"center"}>
+        <Grid item>
+          <h1>Friend Requests</h1>
+        </Grid>
+        {pendingFriends.length > 0
+          ? pendingFriends.map((result) => {
+              return (
+                <Grid item key={result.recipient}>
+                  <SearchResult profileId={result.recipient} />
+                </Grid>
+              );
+            })
+          : null}
+        <Divider />
+        <Grid item>
+          <h1>Friends Page</h1>
+        </Grid>
+        {confirmedFriends.length > 0
+          ? confirmedFriends.map((result) => {
+              return (
+                <Grid item key={result.recipient}>
+                  <SearchResult profileId={result.recipient} />
+                </Grid>
+              );
+            })
+          : null}
+      </Grid>
     </>
   );
 };
