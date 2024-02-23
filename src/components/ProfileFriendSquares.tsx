@@ -36,8 +36,8 @@ const ProfileFriendSquares = (props) => {
 
   useEffect(() => {
     if (filteredFriends) {
-      if (filteredFriends.length > 9) {
-        setProfilesToDisplay(filteredFriends.slice(0, 9));
+      if (filteredFriends.length > 6) {
+        setProfilesToDisplay(filteredFriends.slice(0, 6));
       } else {
         setProfilesToDisplay(filteredFriends);
       }
