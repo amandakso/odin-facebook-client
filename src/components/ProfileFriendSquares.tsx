@@ -45,7 +45,7 @@ const ProfileFriendSquares = (props) => {
   }, [filteredFriends]);
 
   return (
-    <div style={{ border: "solid black 1px" }}>
+    <div style={{ border: "solid black 1px", marginTop: "5vh" }}>
       <h1 style={{ fontSize: "1rem" }}>Friends</h1>
       <Grid container>
         {profilesToDisplay.map((friend) => {
