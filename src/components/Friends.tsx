@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import jwtDecode, { JwtPayload } from "jwt-decode";
 
+import Divider from "@mui/material/Divider";
+
 import SearchResult from "./SearchResult";
 
 declare module "jwt-decode" {
@@ -23,7 +25,8 @@ type friend = {
 };
 
 const Friends = () => {
-  const [profileFriends, setProfileFriends] = useState<Array<friend>>([]);
+  const [confirmedFriends, setConfirmedFriends] = useState<Array<friend>>([]);
+  const [pendingFriends, setPendingFriends] = useState<Array<friend>>([]);
 
   const token: string = sessionStorage.getItem("token") as string;
   const decoded = jwtDecode<JwtPayload>(token);
@@ -45,7 +48,23 @@ const Friends = () => {
         if (resJson.error) {
           console.log(resJson.error);
         } else {
-          setProfileFriends(resJson.friends);
+          const pendingFriends = [];
+          const confirmedFriends = [];
+          const allFriends = resJson.friends;
+          allFriends.forEach((friend) => {
+            if (friend.status === 3) {
+              confirmedFriends.push(friend);
+            } else if (friend.status === 2) {
+              pendingFriends.push(friend);
+            } else {
+              return;
+            }
+          });
+          console.log(allFriends);
+          console.log(pendingFriends);
+          console.log(confirmedFriends);
+          setConfirmedFriends(confirmedFriends);
+          setPendingFriends(pendingFriends);
         }
       } catch (err) {
         console.log(err);
@@ -55,11 +74,24 @@ const Friends = () => {
       fetchFriends();
     }
   }, [decoded.user._id]);
+
   return (
     <>
+      <h1>Friend Requests</h1>
+      {pendingFriends.length > 0
+        ? pendingFriends.map((result) => {
+            return (
+              <SearchResult
+                key={result.recipient}
+                profileId={result.recipient}
+              />
+            );
+          })
+        : null}
+      <Divider />
       <h1>Friends Page</h1>
-      {profileFriends.length > 0
-        ? profileFriends.map((result) => {
+      {confirmedFriends.length > 0
+        ? confirmedFriends.map((result) => {
             return (
               <SearchResult
                 key={result.recipient}
