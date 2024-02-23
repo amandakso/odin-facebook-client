@@ -207,59 +207,67 @@ const Comment = (props) => {
     }
   }, [props.updatedAt]);
 
+  /**
+   * profile pic, name, date
+   * comment
+   * edit buttons delete button
+   *
+   *
+   */
+
   return (
     <>
-      <Box style={{ width: "80%" }}>
-        <Grid container spacing={2}>
-          <Grid container item xs={12} spacing={1}>
-            <Grid item xs="auto">
-              <ProfilePhoto username={props.username} photo={photo} size={75} />
+      <Box>
+        <Grid container>
+          <Grid container item style={{ padding: "5px" }}>
+            <Grid item>
+              <ProfilePhoto username={props.username} photo={photo} size={50} />
             </Grid>
-            <Grid item xs={8}>
-              <p style={{ textAlign: "left" }}>{props.username}</p>
-              <p style={{ textAlign: "left" }}>{updatedAt}</p>
+            <Grid item style={{ paddingLeft: "12px" }}>
+              <p style={{ textAlign: "left", margin: 0 }}>{props.username}</p>
+              <p style={{ textAlign: "left", margin: 0 }}>{updatedAt}</p>
             </Grid>
           </Grid>
-          <Grid item xs={12}>
-            <Grid item>
-              <Box component="form" noValidate>
-                <Textarea
-                  aria-label="post textarea"
-                  maxRows={10}
-                  maxLength={1000}
-                  readOnly={readOnly}
-                  onChange={handleCommentTextChange}
-                  value={commentText}
-                  style={{
-                    resize: "none",
-                    width: "80%",
-                    border: "none",
-                    outline: "none",
-                    textAlign: "left",
-                  }}
-                />
-                {editAuthorized ? (
-                  readOnly ? (
-                    <IconButton aria-label="edit" onClick={allowEditComment}>
-                      <ModeEditIcon />
-                    </IconButton>
-                  ) : (
-                    <>
-                      <IconButton aria-label="update" onClick={editComment}>
-                        <CheckIcon />
-                      </IconButton>
-                      <IconButton aria-label="cancel" onClick={cancelEdit}>
-                        <ClearIcon />
-                      </IconButton>
-                    </>
-                  )
-                ) : null}
-                {deleteAuthorized ? (
-                  <IconButton aria-label="delete" onClick={deleteComment}>
-                    <DeleteIcon />
+          <Grid item style={{ padding: "5px" }}>
+            <Box component="form" noValidate>
+              <Textarea
+                aria-label="post textarea"
+                maxRows={10}
+                maxLength={1000}
+                readOnly={readOnly}
+                onChange={handleCommentTextChange}
+                value={commentText}
+                style={{
+                  resize: "none",
+                  width: "100%",
+                  border: "none",
+                  outline: "none",
+                  textAlign: "left",
+                }}
+              />
+            </Box>
+            <Grid item container justifyContent={"flex-start"}>
+              {editAuthorized ? (
+                readOnly ? (
+                  <IconButton aria-label="edit" onClick={allowEditComment}>
+                    <ModeEditIcon />
                   </IconButton>
-                ) : null}
-              </Box>
+                ) : (
+                  <>
+                    <IconButton aria-label="update" onClick={editComment}>
+                      <CheckIcon />
+                    </IconButton>
+                    <IconButton aria-label="cancel" onClick={cancelEdit}>
+                      <ClearIcon />
+                    </IconButton>
+                  </>
+                )
+              ) : null}
+              {deleteAuthorized ? (
+                <IconButton aria-label="delete" onClick={deleteComment}>
+                  <DeleteIcon />
+                </IconButton>
+              ) : null}
             </Grid>
           </Grid>
         </Grid>
