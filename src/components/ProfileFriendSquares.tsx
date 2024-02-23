@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import ProfileFriendSquare from "./ProfileFriendSquare";
 import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
 
 type friend = {
   createdAt: string; // date
@@ -44,20 +45,21 @@ const ProfileFriendSquares = (props) => {
   }, [filteredFriends]);
 
   return (
-    <>
-      <h1>Friends</h1>
-      {profilesToDisplay.map((friend) => {
-        return (
-          <ProfileFriendSquare
-            key={friend.recipient}
-            profileId={friend.recipient}
-          />
-        );
-      })}
+    <div style={{ border: "solid black 1px" }}>
+      <h1 style={{ fontSize: "1rem" }}>Friends</h1>
+      <Grid container>
+        {profilesToDisplay.map((friend) => {
+          return (
+            <Grid item key={friend.recipient}>
+              <ProfileFriendSquare profileId={friend.recipient} />
+            </Grid>
+          );
+        })}
+      </Grid>
       <Button variant="text" onClick={handleFriendsClick}>
         See All
       </Button>
-    </>
+    </div>
   );
 };
 
