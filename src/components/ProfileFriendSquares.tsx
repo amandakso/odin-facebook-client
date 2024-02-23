@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import ProfileFriendSquare from "./ProfileFriendSquare";
 import Button from "@mui/material/Button";
@@ -17,6 +17,16 @@ const ProfileFriendSquares = (props) => {
   const friends: Array<friend> | undefined = props.friends;
   const [profilesToDisplay, setProfilesToDisplay] = useState<Array<friend>>([]);
 
+  const filteredFriends = useMemo(() => {
+    const filteredArr: friend[] = [];
+    friends?.forEach((friend) => {
+      if (friend.status == 3) {
+        filteredArr.push(friend);
+      }
+    });
+    return filteredArr;
+  }, [friends]);
+
   const navigate = useNavigate();
 
   const handleFriendsClick = () => {
@@ -24,14 +34,14 @@ const ProfileFriendSquares = (props) => {
   };
 
   useEffect(() => {
-    if (friends) {
-      if (friends.length > 9) {
-        setProfilesToDisplay(friends.slice(0, 9));
+    if (filteredFriends) {
+      if (filteredFriends.length > 9) {
+        setProfilesToDisplay(filteredFriends.slice(0, 9));
       } else {
-        setProfilesToDisplay(friends);
+        setProfilesToDisplay(filteredFriends);
       }
     }
-  }, [friends]);
+  }, [filteredFriends]);
 
   return (
     <>
