@@ -21,14 +21,6 @@ type queryResultstype = {
   ];
 };
 
-/**
- *
- * TODOS
- * show results as profiles
- * show/hide more search results
- *
- */
-
 const Search = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchResults, setSearchResults] = useState<searchResult[]>([]);
@@ -41,6 +33,9 @@ const Search = () => {
 
   useEffect(() => {
     const query: string | null = searchParams.get("search");
+    if (query) {
+      setSearchParams(query);
+    }
     const fetchData = async () => {
       try {
         const res = await fetch(
@@ -54,7 +49,6 @@ const Search = () => {
           }
         );
         const resJson: queryResultstype = await res.json();
-
         console.log(resJson);
         if (res.status === 200) {
           if (resJson.error) {
@@ -79,7 +73,7 @@ const Search = () => {
     if (query) {
       fetchData();
     }
-  }, [searchParams]);
+  }, [searchParams, setSearchParams]);
   return (
     <>
       <Container maxWidth="sm">

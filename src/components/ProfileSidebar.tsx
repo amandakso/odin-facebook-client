@@ -28,7 +28,7 @@ type profileStatusType =
 
 interface Props {
   profileId: string | null;
-  username: string | null;
+  username: string | undefined;
   bio: string | null;
   photo: string | null;
   friends: friend[] | null;

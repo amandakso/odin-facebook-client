@@ -4,13 +4,13 @@ import { Buffer } from "buffer";
 import { useEffect, useState } from "react";
 
 interface Props {
-  username: string | null;
+  username: string | undefined;
   photo: string | null;
   size: number;
 }
 
 const ProfilePhoto = (props: Props) => {
-  const [username, setUsername] = useState<string | null>(null);
+  const [username, setUsername] = useState<string | undefined>(props.username);
   const [photo, setPhoto] = useState<string | null>(null);
   const [photoUrl, setPhotoUrl] = useState<string | null>(null);
 

@@ -10,7 +10,7 @@ import CardContent from "@mui/material/CardContent";
 import ProfilePhoto from "./ProfilePhoto";
 
 interface Props {
-  key: string;
+  key?: string;
   profileId: string;
 }
 
