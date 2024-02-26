@@ -25,26 +25,32 @@ function App() {
               </>
             }
           >
-            <Route path="/" element={<PrivateRoute child={<Home />} />}></Route>
             <Route
-              path="/profile/:username"
+              path="/odin-facebook-client/"
+              element={<PrivateRoute child={<Home />} />}
+            ></Route>
+            <Route
+              path="/odin-facebook-client/profile/:username"
               element={<PrivateRoute child={<Profile />} />}
             ></Route>
             <Route
-              path="/friends"
+              path="/odin-facebook-client/friends"
               element={<PrivateRoute child={<Friends />} />}
             ></Route>
             <Route
-              path="/search"
+              path="/odin-facebook-client/search"
               element={<PrivateRoute child={<Search />} />}
             ></Route>
             <Route
-              path="/settings"
+              path="/odin-facebook-client/settings"
               element={<PrivateRoute child={<Settings />} />}
             ></Route>
           </Route>
-          <Route path="/login" element={<Login />}></Route>
-          <Route path="/signup" element={<Signup />}></Route>
+          <Route path="/odin-facebook-client/" element={<Login />}></Route>
+          <Route
+            path="/odin-facebook-client/signup"
+            element={<Signup />}
+          ></Route>
           <Route path="/*" element={<NotFound />}></Route>
         </Routes>
       </BrowserRouter>
