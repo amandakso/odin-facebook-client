@@ -29,6 +29,14 @@ function Copyright() {
   );
 }
 
+type errorType = {
+  location: string;
+  msg: string;
+  path: string;
+  type: string;
+  value: string;
+};
+
 export default function Signup() {
   type alertType = string | null;
   type alertSeverityType = "error" | "success";
@@ -36,7 +44,7 @@ export default function Signup() {
   const [alert, setAlert] = useState<alertType>(null);
   const [alertSeverity, setAlertSeverity] =
     useState<alertSeverityType>("error");
-  const [errors, setErrors] = useState<string[] | null>(null);
+  const [errors, setErrors] = useState<errorType[] | null>(null);
   const [open, setOpen] = useState<boolean>(false);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -196,7 +204,7 @@ export default function Signup() {
           </Link>
         </Box>
       </Box>
-      <Copyright sx={{ mt: 8, mb: 4 }} />
+      <Copyright />
     </Container>
   );
 }

@@ -2,7 +2,11 @@ import { useState, useEffect } from "react";
 import ProfilePhoto from "./ProfilePhoto";
 import Box from "@mui/material/Box";
 
-const ProfileFriendSquare = (props) => {
+interface Props {
+  profileId: string;
+}
+
+const ProfileFriendSquare = (props: Props) => {
   const [photo, setPhoto] = useState<string>("");
   const [username, setUsername] = useState<string>("");
 

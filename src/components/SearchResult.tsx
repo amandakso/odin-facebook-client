@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 import Typography from "@mui/material/Typography";
@@ -10,7 +9,12 @@ import CardContent from "@mui/material/CardContent";
 
 import ProfilePhoto from "./ProfilePhoto";
 
-const SearchResult = (props) => {
+interface Props {
+  key: string;
+  profileId: string;
+}
+
+const SearchResult = (props: Props) => {
   const [photo, setPhoto] = useState<string>("");
   const [username, setUsername] = useState<string>("");
 

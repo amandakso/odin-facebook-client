@@ -21,7 +21,19 @@ declare module "jwt-decode" {
   }
 }
 
-const Comment = (props) => {
+interface Props {
+  key: string;
+  postid: string;
+  postAuthorId: string;
+  authorid: string;
+  username: string;
+  createdAt: string;
+  updatedAt: string;
+  text: string;
+  commentid: string;
+}
+
+const Comment = (props: Props) => {
   const [photo, setPhoto] = useState<string>("");
   const [updatedAt, setUpdatedAt] = useState<string>("");
   const [editAuthorized, setEditAuthorized] = useState<boolean>(false);

@@ -3,7 +3,13 @@ import { blue } from "@mui/material/colors";
 import { Buffer } from "buffer";
 import { useEffect, useState } from "react";
 
-const ProfilePhoto = (props) => {
+interface Props {
+  username: string | null;
+  photo: string | null;
+  size: number;
+}
+
+const ProfilePhoto = (props: Props) => {
   const [username, setUsername] = useState<string | null>(null);
   const [photo, setPhoto] = useState<string | null>(null);
   const [photoUrl, setPhotoUrl] = useState<string | null>(null);

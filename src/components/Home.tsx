@@ -11,6 +11,21 @@ declare module "jwt-decode" {
   }
 }
 
+type friend = {
+  createdAt: string; // date
+  recipient: string; // userid
+  requester: string; //userid
+  status: number; // 0-3
+  updatedAt: string; // date
+  __v: number;
+  _id: string; // friendship id
+};
+
+interface Resjson {
+  error?: string;
+  friends?: friend[];
+}
+
 const Home = () => {
   const token: string = sessionStorage.getItem("token") as string;
   const decoded = jwtDecode<JwtPayload>(token);
@@ -35,12 +50,12 @@ const Home = () => {
             }
           );
 
-          const resJson = await res.json();
+          const resJson: Resjson = await res.json();
 
           if (resJson.error) {
             console.log(resJson.error);
           } else {
-            const friendsArray = resJson.friends;
+            const friendsArray = resJson.friends as friend[];
             const arr: string[] = [];
             friendsArray.forEach((item) => {
               if (item.status === 3) {

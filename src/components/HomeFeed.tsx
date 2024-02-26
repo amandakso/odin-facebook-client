@@ -12,7 +12,11 @@ type post = {
   _id: string; //postid
 };
 
-const HomeFeed = (props) => {
+interface Props {
+  authors: Set<string>;
+}
+
+const HomeFeed = (props: Props) => {
   const [authors, setAuthors] = useState<Set<string>>(new Set<string>());
   const [authorsAdded, setAuthorsAdded] = useState<Set<string>>(
     new Set<string>()

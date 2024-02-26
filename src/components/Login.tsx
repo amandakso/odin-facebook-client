@@ -210,7 +210,7 @@ export default function Login() {
           </Button>
         </Box>
       </Box>
-      <Copyright sx={{ mt: 8, mb: 4 }} />
+      <Copyright />
     </Container>
   );
 }

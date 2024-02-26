@@ -14,7 +14,11 @@ type friend = {
   _id: string; // friendship id
 };
 
-const ProfileFriendSquares = (props) => {
+interface Props {
+  friends: friend[];
+}
+
+const ProfileFriendSquares = (props: Props) => {
   const friends: Array<friend> | undefined = props.friends;
   const [profilesToDisplay, setProfilesToDisplay] = useState<Array<friend>>([]);
 

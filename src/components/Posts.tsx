@@ -12,7 +12,11 @@ type post = {
   _id: string; //postid
 };
 
-const Posts = (props): JSX.Element => {
+interface Props {
+  posts: post[];
+}
+
+const Posts = (props: Props): JSX.Element => {
   const [posts, setPosts] = useState<post[] | null>(null);
   const [numOfPostsShown, setNumOfPostsShown] = useState(5);
   const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(false);

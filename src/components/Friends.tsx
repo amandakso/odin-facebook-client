@@ -49,10 +49,10 @@ const Friends = () => {
         if (resJson.error) {
           console.log(resJson.error);
         } else {
-          const pendingFriends = [];
-          const confirmedFriends = [];
+          const pendingFriends: friend[] = [];
+          const confirmedFriends: friend[] = [];
           const allFriends = resJson.friends;
-          allFriends.forEach((friend) => {
+          allFriends.forEach((friend: friend) => {
             if (friend.status === 3) {
               confirmedFriends.push(friend);
             } else if (friend.status === 2) {

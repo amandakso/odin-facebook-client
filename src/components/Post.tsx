@@ -3,7 +3,7 @@ import Textarea from "@mui/material/TextareaAutosize";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import jwtDecode, { JwtPayload } from "jwt-decode";
 
 import IconButton from "@mui/material/IconButton";
@@ -39,7 +39,17 @@ type comment = {
   _id: string; // comment id
 };
 
-const Post = (props) => {
+interface Props {
+  key: string;
+  authorid: string;
+  username: string;
+  createdAt: string;
+  updatedAt: string;
+  text: string;
+  postid: string;
+}
+
+const Post = (props: Props) => {
   const token: string = sessionStorage.getItem("token") as string;
   const decoded = jwtDecode<JwtPayload>(token);
   const currentUser = decoded.user._id;

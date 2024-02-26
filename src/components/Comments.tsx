@@ -12,7 +12,12 @@ type comment = {
   _id: string; // comment id
 };
 
-const Comments = (props) => {
+interface Props {
+  comments: comment[] | null;
+  postAuthorId: string;
+}
+
+const Comments = (props: Props) => {
   const [comments, setComments] = useState<comment[] | null>(null);
 
   useEffect(() => {

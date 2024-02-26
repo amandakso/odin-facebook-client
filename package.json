@@ -2,6 +2,7 @@
   "name": "odin-fb-client",
   "private": true,
   "version": "0.0.0",
+  "homepage": "https://amandakso.github.io/odin-facebook-client/",
   "type": "module",
   "scripts": {
     "dev": "vite",
