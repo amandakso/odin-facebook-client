@@ -199,7 +199,7 @@ export default function Signup() {
           >
             Sign Up
           </Button>
-          <Link href="/login" variant="body2">
+          <Link href="/odin-facebook-client/login" variant="body2">
             {"Already have an account? Log In"}
           </Link>
         </Box>

@@ -90,7 +90,7 @@ export default function Navbar() {
 
   const handleHomeClick = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
-    navigate(`/`);
+    navigate(`/odin-facebook-client/`);
   };
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -131,7 +131,7 @@ export default function Navbar() {
         setOpenSnackbar(true);
         setAlertSeverity("success");
         setAlertMessage(resJson.message);
-        navigate("/login");
+        navigate("/odin-facebook-client/login");
       } else {
         setOpenSnackbar(true);
         setAlertSeverity("error");
@@ -153,20 +153,20 @@ export default function Navbar() {
     console.log(decoded.user._id);
     console.log(decoded.user.username);
     handleMenuClose();
-    navigate(`/profile/${decoded.user.username}`);
+    navigate(`/odin-facebook-client/profile/${decoded.user.username}`);
   };
 
   const handleSearchClick = () => {
-    navigate(`/search/?search=${searchValue}`);
+    navigate(`/odin-facebook-client/search/?search=${searchValue}`);
   };
 
   const handleSettingsClick = () => {
     handleMenuClose();
-    navigate(`/settings`);
+    navigate(`/odin-facebook-client/settings`);
   };
 
   const handleFriendsClick = () => {
-    navigate("/friends");
+    navigate("/odin-facebook-client/friends");
   };
 
   const menuId = "primary-search-account-menu";

@@ -64,7 +64,7 @@ export default function Login() {
           console.log(resJson.message);
         } else if (resJson.token) {
           sessionStorage.setItem("token", resJson.token);
-          navigate("/");
+          navigate("/odin-facebook-client/");
         } else {
           console.log("Unable to login as guest");
         }
@@ -112,7 +112,7 @@ export default function Login() {
             setOpen(false);
           }
           sessionStorage.setItem("token", resJson.token);
-          navigate("/");
+          navigate("/odin-facebook-client/");
         } else {
           setAlert("Unable to login");
           setOpen(true);
@@ -198,7 +198,7 @@ export default function Login() {
           >
             Log In
           </Button>
-          <Link href="/signup" variant="body2">
+          <Link href="/odin-facebook-client/signup" variant="body2">
             {"Don't have an account? Sign Up"}
           </Link>
           <Button

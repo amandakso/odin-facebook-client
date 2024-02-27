@@ -4,7 +4,7 @@ const NotFound = () => {
     <>
       <h1>Page Not Found</h1>
       <p>
-        Return to Home Page <Link to="/">HERE</Link>
+        Return to Home Page <Link to="/odin-facebook-client/">HERE</Link>
       </p>
     </>
   );

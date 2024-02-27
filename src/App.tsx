@@ -46,12 +46,12 @@ function App() {
               element={<PrivateRoute child={<Settings />} />}
             ></Route>
           </Route>
-          <Route path="/odin-facebook-client/" element={<Login />}></Route>
+          <Route path="/odin-facebook-client/login" element={<Login />}></Route>
           <Route
             path="/odin-facebook-client/signup"
             element={<Signup />}
           ></Route>
-          <Route path="/*" element={<NotFound />}></Route>
+          <Route path="/odin-facebook-client/*" element={<NotFound />}></Route>
         </Routes>
       </BrowserRouter>
     </div>

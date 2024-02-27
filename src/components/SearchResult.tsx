@@ -51,7 +51,10 @@ const SearchResult = (props: Props) => {
   return (
     <>
       <Grid item>
-        <CardActionArea component="a" href={`/profile/${username}`}>
+        <CardActionArea
+          component="a"
+          href={`/odin-facebook-client/profile/${username}`}
+        >
           <Card
             sx={{
               display: "flex",
