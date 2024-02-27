@@ -15,7 +15,7 @@ import Friends from "./components/Friends";
 function App() {
   return (
     <div className="App">
-      <BrowserRouter>
+      <BrowserRouter basename="/odin-facebook-client">
         <Routes>
           <Route
             element={
@@ -25,33 +25,27 @@ function App() {
               </>
             }
           >
+            <Route path="/" element={<PrivateRoute child={<Home />} />}></Route>
             <Route
-              path="/odin-facebook-client/"
-              element={<PrivateRoute child={<Home />} />}
-            ></Route>
-            <Route
-              path="/odin-facebook-client/profile/:username"
+              path="/profile/:username"
               element={<PrivateRoute child={<Profile />} />}
             ></Route>
             <Route
-              path="/odin-facebook-client/friends"
+              path="/friends"
               element={<PrivateRoute child={<Friends />} />}
             ></Route>
             <Route
-              path="/odin-facebook-client/search"
+              path="/search"
               element={<PrivateRoute child={<Search />} />}
             ></Route>
             <Route
-              path="/odin-facebook-client/settings"
+              path="/settings"
               element={<PrivateRoute child={<Settings />} />}
             ></Route>
           </Route>
-          <Route path="/odin-facebook-client/login" element={<Login />}></Route>
-          <Route
-            path="/odin-facebook-client/signup"
-            element={<Signup />}
-          ></Route>
-          <Route path="/odin-facebook-client/*" element={<NotFound />}></Route>
+          <Route path="login" element={<Login />}></Route>
+          <Route path="/signup" element={<Signup />}></Route>
+          <Route path="/*" element={<NotFound />}></Route>
         </Routes>
       </BrowserRouter>
     </div>

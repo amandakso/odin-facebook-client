@@ -35,7 +35,7 @@ const ProfileFriendSquares = (props: Props) => {
   const navigate = useNavigate();
 
   const handleFriendsClick = () => {
-    navigate("/odin-facebook-client/friends");
+    navigate("/friends");
   };
 
   useEffect(() => {

@@ -10,7 +10,7 @@ const PrivateRoute = ({ child }: childType) => {
   if (isLoggedIn) {
     return child;
   }
-  return <Navigate replace={true} to="/odin-facebook-client/login" />;
+  return <Navigate replace={true} to="/login" />;
 };
 
 export default PrivateRoute;

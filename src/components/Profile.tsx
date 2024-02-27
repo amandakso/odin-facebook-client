@@ -125,7 +125,7 @@ const Profile = () => {
 
   useEffect(() => {
     if (profileStatus === "none") {
-      navigate("/odin-facebook-client/ProfileNotFound");
+      navigate("/ProfileNotFound");
     }
   }, [profileStatus, navigate]);
 
