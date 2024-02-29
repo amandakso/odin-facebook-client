@@ -42,17 +42,13 @@ export default function Login() {
     event.preventDefault();
     try {
       const res = await fetch(
-        "https://odin-facebook-api.onrender.com/api/auth/login",
+        "https://odin-facebook-api.onrender.com/api/auth/guest_login",
         {
           method: "POST",
           mode: "cors",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            username: import.meta.env.GUEST_USERNAME,
-            password: import.meta.env.GUEST_PWD,
-          }),
         }
       );
       const resJson = await res.json();
