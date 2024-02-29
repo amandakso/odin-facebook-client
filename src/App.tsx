@@ -15,7 +15,7 @@ import Friends from "./components/Friends";
 function App() {
   return (
     <div className="App">
-      <BrowserRouter basename="/odin-facebook-client">
+      <BrowserRouter>
         <Routes>
           <Route
             element={
