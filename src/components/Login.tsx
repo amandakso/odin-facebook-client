@@ -198,7 +198,7 @@ export default function Login() {
           >
             Log In
           </Button>
-          <Link href="/odin-facebook-client/signup" variant="body2">
+          <Link href="/signup" variant="body2">
             {"Don't have an account? Sign Up"}
           </Link>
           <Button
