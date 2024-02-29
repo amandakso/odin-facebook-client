@@ -50,8 +50,8 @@ export default function Login() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            username: process.env.GUEST_USERNAME,
-            password: process.env.GUEST_PWD,
+            username: import.meta.env.GUEST_USERNAME,
+            password: import.meta.env.GUEST_PWD,
           }),
         }
       );
