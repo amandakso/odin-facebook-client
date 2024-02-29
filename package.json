@@ -2,7 +2,7 @@
   "name": "odin-fb-client",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://odin-facebook-client.vercel.app/",
+  "homepage": "https://odin-facebook-client.vercel.app",
   "type": "module",
   "scripts": {
     "dev": "vite",
