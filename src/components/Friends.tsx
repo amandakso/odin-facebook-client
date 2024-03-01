@@ -77,7 +77,7 @@ const Friends = () => {
     <>
       <Grid container direction={"column"} alignItems={"center"}>
         <Grid item>
-          <h1>Friend Requests</h1>
+          <h1>Friend Requests: </h1>
         </Grid>
         {pendingFriends.length > 0
           ? pendingFriends.map((result) => {
@@ -90,7 +90,7 @@ const Friends = () => {
           : null}
         <Divider />
         <Grid item>
-          <h1>Friends Page</h1>
+          <h1>Current Friends: </h1>
         </Grid>
         {confirmedFriends.length > 0
           ? confirmedFriends.map((result) => {
