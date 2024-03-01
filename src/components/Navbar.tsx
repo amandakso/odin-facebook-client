@@ -149,9 +149,7 @@ export default function Navbar() {
   const handleProfileClick = () => {
     const token: string = sessionStorage.getItem("token") as string;
     const decoded = jwtDecode<JwtPayload>(token);
-    console.log(decoded);
-    console.log(decoded.user._id);
-    console.log(decoded.user.username);
+
     handleMenuClose();
     navigate(`/profile/${decoded.user.username}`);
   };

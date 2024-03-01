@@ -49,7 +49,7 @@ const Search = () => {
           }
         );
         const resJson: queryResultstype = await res.json();
-        console.log(resJson);
+
         if (res.status === 200) {
           if (resJson.error) {
             const error = new Error(resJson.error);

@@ -29,7 +29,6 @@ const ProfileFriendSquare = (props: Props) => {
         } else {
           setPhoto(resJson.photo);
           setUsername(resJson.username);
-          console.log(resJson.photo);
         }
       } catch (err) {
         console.log(err);

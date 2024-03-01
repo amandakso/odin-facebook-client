@@ -80,7 +80,6 @@ const ProfileSidebar = (props: Props): JSX.Element => {
       );
       const resJson = await res.json();
       if (resJson.status === "success") {
-        console.log(resJson.message);
         window.location.reload();
       }
       if (resJson.status === "error") {
@@ -112,7 +111,6 @@ const ProfileSidebar = (props: Props): JSX.Element => {
         );
         const resJson = await res.json();
         if (resJson.status === "success") {
-          console.log(resJson.message);
           window.location.reload();
         }
         if (resJson.status === "error") {
@@ -136,7 +134,6 @@ const ProfileSidebar = (props: Props): JSX.Element => {
         );
         const resJson = await res.json();
         if (resJson.status === "success") {
-          console.log(resJson.message);
           window.location.reload();
         }
         if (resJson.status === "error") {
@@ -166,7 +163,6 @@ const ProfileSidebar = (props: Props): JSX.Element => {
       );
       const resJson = await res.json();
       if (resJson.status === "success") {
-        console.log(resJson.message);
         window.location.reload();
       }
       if (resJson.status === "error") {

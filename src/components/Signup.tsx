@@ -50,11 +50,7 @@ export default function Signup() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      username: data.get("username"),
-      password: data.get("password"),
-      password_confirmation: data.get("password_confirmation"),
-    });
+
     try {
       const res = await fetch(
         "https://odin-facebook-api.onrender.com/api/auth/signup",
@@ -75,7 +71,6 @@ export default function Signup() {
       const resJson = await res.json();
 
       if (res.status === 200) {
-        console.log(resJson);
         if (resJson.errors) {
           setErrors(resJson.errors);
           setAlert("Invalid submission: ");

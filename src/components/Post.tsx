@@ -314,7 +314,6 @@ const Post = (props: Props) => {
         console.log(resJson.error);
       } else {
         if (resJson.data) {
-          console.log("resJson.data: " + resJson.data.comment);
           setComments((prev) => [...(prev as comment[]), resJson.data]);
         }
       }

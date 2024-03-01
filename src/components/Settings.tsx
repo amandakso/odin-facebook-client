@@ -85,13 +85,11 @@ const Settings = () => {
             }
             setSnackbarOpen(true);
             setProfilePhoto(resJson.data);
-            console.log(resJson.data);
           } else {
             return;
           }
         } else {
           setAlertMessage("An error occurred. Unable to update photo.");
-          console.log(resJson.error);
           if (alertSeverity != "error") {
             setAlertSeverity("error");
           }
@@ -180,7 +178,6 @@ const Settings = () => {
     const token: string = sessionStorage.getItem("token") as string;
     const decoded = jwtDecode<JwtPayload>(token);
     const data = new FormData(event.currentTarget);
-    console.log(data.get("username"));
     try {
       const res = await fetch(
         `https://odin-facebook-api.onrender.com/api/users/${decoded.user._id}/profile/update-username`,
@@ -244,7 +241,7 @@ const Settings = () => {
     const token: string = sessionStorage.getItem("token") as string;
     const decoded = jwtDecode<JwtPayload>(token);
     const data = new FormData(event.currentTarget);
-    console.log(data.get("password"));
+
     try {
       const res = await fetch(
         `https://odin-facebook-api.onrender.com/api/users/${decoded.user._id}/profile/update-pwd`,
@@ -263,7 +260,6 @@ const Settings = () => {
       const resJson = await res.json();
 
       if (res.status === 200) {
-        console.log(resJson);
         if (resJson.error) {
           setAlertMessage(resJson.error);
           if (alertSeverity != "error") {
@@ -282,7 +278,6 @@ const Settings = () => {
           return;
         }
       } else {
-        console.log(resJson);
         if (resJson.errors) {
           setAlertMessage("Invalid entry. Unable to update password.");
         } else {

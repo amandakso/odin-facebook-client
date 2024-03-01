@@ -73,8 +73,6 @@ export default function Login() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log(data.get("username"));
-    console.log(data.get("password"));
     try {
       const res = await fetch(
         "https://odin-facebook-api.onrender.com/api/auth/login",
