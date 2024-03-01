@@ -54,7 +54,7 @@ const Posts = (props: Props): JSX.Element => {
 
   return (
     <>
-      {posts ? (
+      {posts && posts.length > 0 ? (
         <div>
           <div>{shownPosts}</div>
           <Button
@@ -66,7 +66,7 @@ const Posts = (props: Props): JSX.Element => {
             Show More
           </Button>
         </div>
-      ) : (
+      ) : posts ? null : (
         <p>Loading...</p>
       )}
     </>
