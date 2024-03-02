@@ -14,15 +14,6 @@ type friend = {
   _id: string; // friendship id
 };
 
-type profileStatusType =
-  | "self"
-  | "friend"
-  | "requested"
-  | "pending"
-  | "other"
-  | "none"
-  | null;
-
 interface Props {
   friends: friend[];
   profile: profileStatusType;
@@ -32,9 +23,6 @@ const ProfileFriendSquares = (props: Props) => {
   const friends: Array<friend> | undefined = props.friends;
   const [profilesToDisplay, setProfilesToDisplay] = useState<Array<friend>>([]);
   const [numOfFriends, setNumOfFriends] = useState<number | null>(0);
-  const [profileStatus, setProfileStatus] = useState<profileStatusType>(
-    props.profile
-  );
 
   const filteredFriends = useMemo(() => {
     const filteredArr: friend[] = [];
@@ -63,12 +51,6 @@ const ProfileFriendSquares = (props: Props) => {
     }
   }, [filteredFriends]);
 
-  useEffect(() => {
-    if (props.profile) {
-      setProfileStatus(props.profile);
-    }
-  }, [props.profile]);
-
   return (
     <div
       style={{
@@ -88,11 +70,9 @@ const ProfileFriendSquares = (props: Props) => {
           );
         })}
       </Grid>
-      {profileStatus === "self" ? (
-        <Button variant="text" onClick={handleFriendsClick}>
-          See All
-        </Button>
-      ) : null}
+      <Button variant="text" onClick={handleFriendsClick}>
+        See All
+      </Button>
     </div>
   );
 };
