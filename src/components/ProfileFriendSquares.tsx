@@ -14,13 +14,27 @@ type friend = {
   _id: string; // friendship id
 };
 
+type profileStatusType =
+  | "self"
+  | "friend"
+  | "requested"
+  | "pending"
+  | "other"
+  | "none"
+  | null;
+
 interface Props {
   friends: friend[];
+  profile: profileStatusType;
 }
 
 const ProfileFriendSquares = (props: Props) => {
   const friends: Array<friend> | undefined = props.friends;
   const [profilesToDisplay, setProfilesToDisplay] = useState<Array<friend>>([]);
+  const [numOfFriends, setNumOfFriends] = useState<number | null>(0);
+  const [profileStatus, setProfileStatus] = useState<profileStatusType>(
+    props.profile
+  );
 
   const filteredFriends = useMemo(() => {
     const filteredArr: friend[] = [];
@@ -40,6 +54,7 @@ const ProfileFriendSquares = (props: Props) => {
 
   useEffect(() => {
     if (filteredFriends) {
+      setNumOfFriends(filteredFriends.length);
       if (filteredFriends.length > 6) {
         setProfilesToDisplay(filteredFriends.slice(0, 6));
       } else {
@@ -48,11 +63,22 @@ const ProfileFriendSquares = (props: Props) => {
     }
   }, [filteredFriends]);
 
+  useEffect(() => {
+    if (props.profile) {
+      setProfileStatus(props.profile);
+    }
+  }, [props.profile]);
+
   return (
     <div
-      style={{ border: "solid black 1px", marginTop: "5vh", minWidth: "300px" }}
+      style={{
+        border: "solid black 1px",
+        marginTop: "5vh",
+        minWidth: "300px",
+        minHeight: "300px",
+      }}
     >
-      <h1 style={{ fontSize: "1rem" }}>Friends</h1>
+      <h1 style={{ fontSize: "1rem" }}>Friends &#40;{numOfFriends}&#41; </h1>
       <Grid container spacing={3}>
         {profilesToDisplay.map((friend) => {
           return (
@@ -62,9 +88,11 @@ const ProfileFriendSquares = (props: Props) => {
           );
         })}
       </Grid>
-      <Button variant="text" onClick={handleFriendsClick}>
-        See All
-      </Button>
+      {profileStatus === "self" ? (
+        <Button variant="text" onClick={handleFriendsClick}>
+          See All
+        </Button>
+      ) : null}
     </div>
   );
 };

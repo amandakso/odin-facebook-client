@@ -208,12 +208,15 @@ const ProfileSidebar = (props: Props): JSX.Element => {
 
       {profileFriends ? (
         profileFriends.length > 0 ? (
-          <ProfileFriendSquares friends={profileFriends} />
+          <ProfileFriendSquares
+            friends={profileFriends}
+            profile={profileStatus}
+          />
         ) : (
-          <ProfileFriendSquares friends={[]} />
+          <ProfileFriendSquares friends={[]} profile={profileStatus} />
         )
       ) : (
-        <ProfileFriendSquares friends={[]} />
+        <ProfileFriendSquares friends={[]} profile={profileStatus} />
       )}
       {friendButtonVisible ? (
         <Button
