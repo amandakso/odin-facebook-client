@@ -16,7 +16,6 @@ type friend = {
 
 interface Props {
   friends: friend[];
-  profile: profileStatusType;
 }
 
 const ProfileFriendSquares = (props: Props) => {
